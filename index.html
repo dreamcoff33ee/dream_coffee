@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Dream Coffee</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>☕ Dream Coffee</h1>
+
+<div>💰 Монети: <span id="money">0</span></div>
+
+<div class="menu">
+  <button onclick="openTab('orders')">📋 Замовлення</button>
+  <button onclick="openTab('make')">☕ Приготування</button>
+  <button onclick="openTab('recipes')">📖 Рецепти</button>
+  <button onclick="openTab('rank')">🏆 Рейтинг</button>
+</div>
+
+<!-- 📋 ЗАМОВЛЕННЯ -->
+<div id="orders" class="section show">
+  <h2>📋 Замовлення</h2>
+  <div class="order">○ Еспресо</div>
+  <div class="order">○ Американо</div>
+  <div class="order">○ Лате</div>
+  <div class="order">○ Айс американо</div>
+  <div class="order">○ Айс лате</div>
+  <div class="order">○ Матча лате</div>
+</div>
+
+<!-- ☕ ПРИГОТУВАННЯ -->
+<div id="make" class="section">
+  <h2>☕ Приготування</h2>
+
+  <div id="cup"></div>
+
+  <div class="ing">
+    <button onclick="add('coffee')">Кава</button>
+    <button onclick="add('milk')">Молоко</button>
+    <button onclick="add('water')">Вода</button>
+    <button onclick="add('ice')">Лід</button>
+    <button onclick="add('matcha')">Матча</button>
+  </div>
+
+  <button onclick="mix()">☕ Змішати</button>
+  <button onclick="resetCup()">Скинути</button>
+
+  <h2 id="result"></h2>
+</div>
+
+<!-- 📖 РЕЦЕПТИ -->
+<div id="recipes" class="section">
+  <h2>📖 Рецепти</h2>
+
+  <p>☕ Еспресо = кава</p>
+  <p>☕ Американо = кава + вода</p>
+  <p>🥛 Лате = кава + молоко</p>
+  <p>🧊 Айс американо = кава + вода + лід</p>
+  <p>🧊 Айс лате = кава + молоко + лід</p>
+  <p>🍵 Матча лате = матча + молоко</p>
+</div>
+
+<!-- 🏆 РЕЙТИНГ -->
+<div id="rank" class="section">
+  <h2>🏆 Рейтинг кав’ярень</h2>
+
+  <p>Star Coffee ⭐ 1200</p>
+  <p>Urban Brew ☕ 1100</p>
+  <p><b>Dream Coffee ☕ 50</b></p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
