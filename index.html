@@ -1,1 +1,1442 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Dream Coffee ☕</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --e:#3B1A08;--d:#5C2D0E;--b:#7A4020;--c:#C8813A;--t:#D4A574;
+  --cr:#F5EDD6;--lc:#FBF6EC;--w:#fff;--bd:#E4D0B4;
+  --tl:#B08060;--ti:#7A4020;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:#2C1404;}
+body{display:flex;align-items:center;justify-content:center;}
+#app{width:100%;max-width:430px;height:100dvh;background:var(--lc);display:flex;flex-direction:column;overflow:hidden;position:relative;}
+::-webkit-scrollbar{display:none;}
+/* SCREENS */
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--lc);opacity:0;pointer-events:none;transition:opacity .18s;}
+.scr.on{opacity:1;pointer-events:all;}
+/* HEADER */
+.hdr{background:var(--w);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);flex-shrink:0;gap:8px;box-shadow:0 2px 6px rgba(59,26,8,.06);}
+.logo{display:flex;align-items:center;gap:6px;min-width:0;}
+.logo-ic{font-size:20px;display:inline-block;animation:lf 3s ease-in-out infinite;}
+@keyframes lf{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+.logo-tx{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--e);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hdr-actions{display:flex;align-items:center;justify-content:flex-end;gap:5px;min-width:0;flex-shrink:0;}
+.star-chip,.lvl-chip,.combo-chip{min-height:28px;border-radius:999px;display:flex;align-items:center;justify-content:center;white-space:nowrap;line-height:1;}
+.star-chip{background:var(--cr);border:1px solid var(--bd);padding:4px 10px;font-weight:800;font-size:12px;color:var(--e);gap:4px;}
+.star-chip .star-ic{font-size:13px;}
+.star-chip .mc-v{font-size:inherit;font-weight:inherit;color:inherit;}
+.combo-chip{background:#E65100;color:#fff;padding:4px 9px;font-weight:900;font-size:11px;display:none;gap:4px;box-shadow:0 2px 7px rgba(230,81,0,.22);}
+.lvl-chip{background:var(--cr);border:1px solid var(--bd);padding:4px 9px;font-weight:800;font-size:10px;color:var(--e);}
+.back-btn{background:none;border:none;font-size:20px;color:var(--b);cursor:pointer;padding-right:5px;line-height:1;flex-shrink:0;}
+/* SCROLL BODY */
+.sb{flex:1;overflow-y:auto;padding:12px 11px 6px;}
+/* BOTTOM NAV */
+.bnav{background:var(--w);border-top:1px solid var(--bd);padding:4px 0 max(10px,env(safe-area-inset-bottom));display:flex;flex-shrink:0;}
+.nb{display:flex;flex-direction:column;align-items:center;gap:1px;flex:1;padding:3px 1px;background:none;border:none;cursor:pointer;}
+.nb .ni{font-size:17px;transition:transform .18s;}
+.nb .nl{font-size:8px;font-weight:700;color:var(--tl);transition:color .18s;}
+.nb .nd{width:3px;height:3px;border-radius:50%;background:var(--c);opacity:0;margin-top:1px;}
+.nb.on .ni{transform:scale(1.15) translateY(-2px);}
+.nb.on .nl{color:var(--e);}
+.nb.on .nd{opacity:1;}
+/* COMMON */
+.pt{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:var(--e);text-align:center;margin-bottom:2px;}
+.ps{text-align:center;color:var(--tl);font-size:10px;margin-bottom:11px;}
+.card{background:var(--w);border:1px solid var(--bd);border-radius:13px;padding:10px;margin-bottom:7px;}
+.btn-p{background:var(--e);color:var(--w);border:none;border-radius:50px;padding:10px 18px;font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;cursor:pointer;width:100%;transition:transform .13s;}
+.btn-p:active{transform:scale(.96);}
+.btn-s{background:var(--e);color:var(--w);border:none;border-radius:50px;padding:5px 11px;font-family:'Nunito',sans-serif;font-weight:800;font-size:10px;cursor:pointer;}
+.btn-s:disabled{opacity:.4;pointer-events:none;}
+/* ONBOARD */
+#s-ob{background:linear-gradient(160deg,#3B1A08,#5C2D0E 50%,#C8813A);justify-content:center;align-items:center;padding:16px;}
+.ob-card{background:var(--w);border-radius:20px;padding:22px 18px;text-align:center;width:100%;max-width:310px;animation:pop .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes pop{from{opacity:0;transform:scale(.85);}to{opacity:1;transform:scale(1);}}
+.ob-inp{width:100%;border:2px solid var(--bd);border-radius:10px;padding:8px 11px;font-family:'Nunito',sans-serif;font-size:13px;color:var(--e);outline:none;margin-bottom:10px;}
+.ob-inp:focus{border-color:var(--c);}
+.ava-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:13px;}
+.ava-btn{background:var(--cr);border:2px solid transparent;border-radius:7px;font-size:20px;padding:4px;cursor:pointer;transition:all .15s;}
+.ava-btn.sel{border-color:var(--c);background:var(--w);}
+/* HERO */
+.hero{background:linear-gradient(148deg,var(--e) 0%,var(--d) 55%,var(--c) 100%);border-radius:16px;padding:18px 13px 13px;color:var(--w);margin-bottom:10px;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;top:-20px;right:-20px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.05);}
+.hero-cup{font-size:50px;display:block;text-align:center;margin:4px 0 8px;animation:fc 4s ease-in-out infinite;}
+@keyframes fc{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+.xpbar{background:rgba(255,255,255,.2);border-radius:10px;height:4px;overflow:hidden;margin-top:4px;}
+.xpfill{height:4px;border-radius:10px;background:var(--w);transition:width .6s;}
+/* STAT ROW */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:9px;}
+.stat-box{background:var(--w);border:1px solid var(--bd);border-radius:10px;padding:8px 4px;text-align:center;}
+/* QUEUE */
+.qcard{background:var(--w);border:1px solid var(--bd);border-radius:13px;padding:10px;margin-bottom:7px;animation:su .22s ease;}
+@keyframes su{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.qcard.sp{border-color:#9C27B0;}
+.qcard.ug{border-color:#C62828;}
+/* CIRCULAR TIMER */
+.ctimer{position:relative;width:36px;height:36px;flex-shrink:0;}
+.ctimer svg{transform:rotate(-90deg);}
+.ct-lb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;color:var(--e);}
+/* BREW */
+.brew-banner{background:var(--cr);border:1px solid var(--bd);border-radius:10px;padding:7px 10px;margin-bottom:9px;display:flex;align-items:center;gap:7px;}
+.req-row{display:flex;flex-wrap:wrap;gap:3px;background:var(--cr);border:1px solid var(--bd);border-radius:8px;padding:5px 8px;margin-bottom:8px;}
+.ri{display:flex;align-items:center;gap:2px;font-size:9px;font-weight:700;}
+.rd{width:6px;height:6px;border-radius:50%;transition:background .3s;}
+.ing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:9px;}
+.ic{background:var(--w);border:2px solid var(--bd);border-radius:9px;padding:7px 3px;text-align:center;cursor:pointer;position:relative;transition:border-color .12s,background .12s,transform .1s;}
+.ic:active{transform:scale(.87);}
+.ic.sel{border-color:var(--c);background:var(--cr);}
+.ic.lk{opacity:.45;pointer-events:none;}
+.ic-badge{position:absolute;top:2px;right:3px;background:var(--c);color:var(--w);border-radius:50%;width:13px;height:13px;font-size:7px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.cup-wrap{background:var(--w);border:1px solid var(--bd);border-radius:14px;padding:10px 8px;margin-bottom:9px;}
+.phase-bar{display:flex;gap:4px;margin-bottom:7px;}
+.ph-btn{flex:1;text-align:center;padding:4px;border-radius:7px;font-size:9px;font-weight:700;background:var(--cr);color:var(--tl);border:1px solid var(--bd);transition:all .2s;}
+.ph-btn.active{background:var(--e);color:var(--w);border-color:var(--e);}
+.brew-acts{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.btn-clear{background:var(--w);color:var(--b);border:2px solid var(--bd);border-radius:50px;padding:8px;font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;cursor:pointer;}
+.btn-mix{background:var(--b);color:var(--w);border:none;border-radius:50px;padding:8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:11px;cursor:pointer;}
+.btn-mix:disabled{opacity:.4;pointer-events:none;}
+.btn-serve{background:var(--e);color:var(--w);border:none;border-radius:50px;padding:8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:11px;cursor:pointer;grid-column:1/-1;}
+.btn-serve:disabled{opacity:.4;pointer-events:none;}
+/* ORDERS TAB */
+.sec-t{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--e);margin-bottom:5px;}
+.st-badge{border-radius:20px;padding:2px 6px;font-size:8px;font-weight:700;}
+.st-d{background:#F0FBF0;color:#2E7D32;}
+.st-p{background:#FFF8EC;color:#BF6000;}
+.st-w{background:#EEF4FF;color:#1A56DB;}
+.st-m{background:#FFF0F0;color:#C62828;}
+.prog-track{background:var(--cr);border-radius:10px;height:3px;overflow:hidden;margin-top:5px;}
+.prog-fill{height:3px;border-radius:10px;background:linear-gradient(90deg,var(--c),var(--t));transition:width 1s;}
+/* MISSIONS */
+.miss-card{background:var(--w);border:1px solid var(--bd);border-radius:10px;padding:8px;margin-bottom:5px;}
+.miss-card.dn{opacity:.6;}
+.miss-bar{background:var(--cr);border-radius:10px;height:4px;overflow:hidden;}
+.miss-fill{height:4px;border-radius:10px;background:linear-gradient(90deg,var(--c),var(--t));}
+/* SHOP */
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:11px;}
+.shop-tile{background:var(--w);border:1px solid var(--bd);border-radius:10px;padding:8px 6px;text-align:center;position:relative;}
+.shop-tile.owned{border-color:var(--c);}
+.shop-tile.locked-shop{opacity:.5;}
+.owned-lb{position:absolute;top:3px;right:3px;background:var(--c);color:var(--w);border-radius:20px;padding:1px 4px;font-size:7px;font-weight:700;}
+.locked-lb{position:absolute;top:3px;right:3px;background:#9E9E9E;color:var(--w);border-radius:20px;padding:1px 4px;font-size:7px;font-weight:700;}
+.btn-buy{background:var(--e);color:var(--w);border:none;border-radius:20px;padding:4px 7px;font-family:'Nunito',sans-serif;font-weight:700;font-size:9px;cursor:pointer;width:100%;}
+.btn-buy.owned{background:var(--c);}
+.btn-buy.locked{background:#9E9E9E;cursor:default;}
+/* LEADERBOARD */
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:5px;margin-bottom:13px;}
+.pod-i{text-align:center;flex:1;}
+.pod-a{font-size:22px;background:var(--w);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;margin:0 auto 2px;border:2px solid var(--bd);}
+.pod-b{border-radius:9px 9px 3px 3px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:var(--w);font-size:14px;}
+.lb-row{background:var(--w);border:1px solid var(--bd);border-radius:10px;padding:9px 10px;margin-bottom:4px;display:flex;align-items:center;gap:6px;cursor:pointer;}
+.lb-row:hover{background:var(--lc);}
+.lb-me{border-color:var(--c)!important;background:var(--cr)!important;}
+/* PROFILE */
+.prof-hero{background:linear-gradient(148deg,var(--e),var(--d) 60%,var(--c));border-radius:15px;padding:16px 13px;text-align:center;color:var(--w);margin-bottom:10px;overflow:hidden;}
+.prof-avatar{font-size:44px;display:block;margin-bottom:4px;animation:fc 4s ease-in-out infinite;}
+.prof-name{font-family:'Playfair Display',serif;font-size:clamp(17px,5vw,24px);font-weight:900;line-height:1.08;margin:0 auto 3px;max-width:100%;overflow-wrap:anywhere;word-break:break-word;}
+.prof-level{font-size:9px;opacity:.75;margin-bottom:4px;}
+.prof-rating{font-size:14px;color:var(--t);}
+.prof-review-line{font-size:10px;font-weight:700;margin-top:1px;}
+.prof-xp-note{font-size:7px;opacity:.65;margin-top:2px;}
+.prof-edit{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:50px;padding:4px 11px;font-family:Nunito,sans-serif;font-weight:800;font-size:9px;color:#fff;cursor:pointer;margin-top:7px;max-width:100%;}
+.home-preview{border-color:var(--c);background:linear-gradient(135deg,#fff,var(--cr));}
+.recipe-mini-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:7px;}
+.recipe-mini{background:var(--w);border:1px solid var(--bd);border-radius:9px;padding:7px;display:flex;align-items:center;gap:7px;min-width:0;}
+.recipe-mini span:first-child{font-size:20px;flex-shrink:0;}
+.recipe-mini div{font-size:9px;font-weight:800;color:var(--e);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.prof-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:9px;}
+.p-stat{background:var(--w);border:1px solid var(--bd);border-radius:10px;padding:8px 3px;text-align:center;}
+.ach-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:9px;}
+.ach-c{background:var(--w);border:1px solid var(--bd);border-radius:10px;padding:8px 7px;text-align:center;position:relative;}
+.ach-c.locked{opacity:.4;}
+.ach-c.done::after{content:'✓';position:absolute;top:3px;right:5px;font-size:8px;font-weight:800;color:#388E3C;}
+.prog-sec{background:var(--w);border:1px solid var(--bd);border-radius:12px;padding:11px;margin-bottom:7px;}
+.prog-i-bar{background:var(--cr);border-radius:10px;height:5px;overflow:hidden;}
+.prog-i-fill{height:5px;border-radius:10px;background:linear-gradient(90deg,var(--c),var(--t));transition:width .7s;}
+.sub-tabs{display:flex;gap:5px;margin-bottom:9px;}
+.sub-tab{flex:1;padding:6px;border-radius:9px;font-family:'Nunito',sans-serif;font-weight:700;font-size:10px;cursor:pointer;border:none;transition:all .18s;}
+.home-layout,.orders-layout,.shop-layout,.profile-layout{display:block;}
+.home-side,.order-col,.shop-main,.shop-recipes{min-width:0;}
+/* MODALS */
+.overlay{position:fixed;inset:0;background:rgba(59,26,8,.52);z-index:200;display:flex;align-items:center;justify-content:center;padding:13px;opacity:0;pointer-events:none;transition:opacity .22s;}
+.overlay.on{opacity:1;pointer-events:all;}
+.m-card{background:var(--w);border-radius:17px;padding:18px 14px;text-align:center;width:100%;max-width:270px;transform:scale(.82);transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+.overlay.on .m-card{transform:scale(1);}
+.lv-card{background:linear-gradient(135deg,var(--e),var(--d));color:var(--w);border-radius:17px;padding:22px 16px;text-align:center;width:100%;max-width:270px;transform:scale(.82);transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+.overlay.on .lv-card{transform:scale(1);}
+/* TOAST */
+.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--e);color:var(--w);border-radius:50px;padding:6px 13px;font-weight:700;font-size:10px;z-index:300;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;max-width:90%;}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+.notif{position:fixed;top:62px;right:10px;background:var(--e);color:var(--w);border-radius:12px;padding:7px 10px;font-size:10px;font-weight:700;z-index:250;opacity:0;transform:translateX(18px);transition:all .3s cubic-bezier(.34,1.56,.64,1);max-width:190px;text-align:right;}
+.notif.on{opacity:1;transform:translateX(0);}
+/* STEAM */
+@keyframes stR{0%{opacity:0;transform:translateY(0);}35%{opacity:.5;}100%{opacity:0;transform:translateY(-12px);}}
+.stm{animation:stR 2.2s ease-in-out infinite;}
+.stm:nth-child(2){animation-delay:.5s;}
+.stm:nth-child(3){animation-delay:1s;}
+@media (min-width:760px){
+  html,body{background:radial-gradient(circle at top,#6f3c1b 0,#2C1404 46%,#170902 100%);}
+  #app{max-width:min(1180px,calc(100vw - 40px));height:min(860px,calc(100dvh - 32px));border-radius:18px;box-shadow:0 22px 70px rgba(0,0,0,.32);}
+  .hdr{padding:14px 22px;gap:12px;}
+  .logo{gap:9px;}
+  .logo-ic{font-size:25px;}
+  .logo-tx{font-size:16px;}
+  .hdr-actions{gap:9px;}
+  .star-chip,.lvl-chip,.combo-chip{min-height:36px;}
+  .star-chip{font-size:14px;padding:6px 13px;gap:5px;}
+  .star-chip .star-ic{font-size:15px;}
+  .lvl-chip,.combo-chip{font-size:12px;padding:8px 13px;}
+  .sb{padding:18px 22px 16px;}
+  #s-main .sb{width:100%;max-width:1040px;margin:0 auto;}
+  #s-queue .sb,#s-brew .sb{width:100%;max-width:860px;margin:0 auto;}
+  .pt{font-size:24px;margin-bottom:4px;}
+  .ps{font-size:12px;margin-bottom:16px;}
+  .card,.qcard{border-radius:12px;padding:14px;margin-bottom:10px;}
+  .hero{display:grid;grid-template-columns:minmax(0,1fr) 150px;align-items:center;column-gap:24px;padding:24px 24px 20px;border-radius:18px;}
+  .hero-cup{grid-column:2;grid-row:1 / span 5;font-size:62px;min-width:96px;margin:0;}
+  .home-layout{display:grid;grid-template-columns:minmax(320px,.86fr) minmax(360px,1.14fr);gap:16px;align-items:start;}
+  .home-layout>.hero{min-height:0;margin-bottom:0;align-self:start;}
+  .home-side{display:flex;flex-direction:column;gap:10px;}
+  .home-side>.card,.home-side>.stat-row{margin-bottom:0;}
+  .orders-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:16px;align-items:start;}
+  .order-col{background:rgba(255,255,255,.35);border:1px solid var(--bd);border-radius:14px;padding:12px;}
+  .order-col .sec-t{margin-bottom:8px;}
+  .order-col>.card:last-child{margin-bottom:0;}
+  #main-sb[data-tab="missions"]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-content:start;}
+  #main-sb[data-tab="missions"]>.pt,#main-sb[data-tab="missions"]>.ps{grid-column:1/-1;}
+  #main-sb[data-tab="missions"]>.miss-card{margin-bottom:0;}
+  .shop-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start;}
+  .shop-recipes{background:rgba(255,255,255,.45);border:1px solid var(--bd);border-radius:14px;padding:12px;}
+  .shop-recipes>.card:last-child{margin-bottom:0;}
+  .profile-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start;}
+  .profile-layout>.prof-hero{grid-column:1/-1;}
+  .profile-content{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start;}
+  .profile-content>.sub-tabs{grid-column:1/-1;width:100%;max-width:560px;}
+  .profile-content>.prof-stats{grid-column:1/-1;}
+  .profile-content>.prog-sec{grid-column:1;}
+  .profile-content>.ach-grid{grid-column:2;grid-row:3 / span 2;margin-bottom:0;}
+  .stat-row{gap:10px;margin-bottom:12px;}
+  .stat-box{padding:13px 8px;}
+  .shop-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px;}
+  .shop-tile{padding:12px 10px;}
+  .prof-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto auto auto auto;align-items:center;column-gap:20px;text-align:left;padding:24px 28px;border-radius:18px;margin-bottom:14px;}
+  .prof-avatar{display:none;}
+  .prof-name{grid-column:1;font-size:clamp(24px,3.2vw,36px);max-width:780px;margin:0 0 4px;}
+  .prof-level{font-size:12px;margin-bottom:6px;}
+  .prof-rating{font-size:18px;}
+  .prof-review-line{font-size:12px;}
+  .prof-xp-note{font-size:9px;}
+  .prof-hero .xpbar{grid-column:1;max-width:520px;width:100%;}
+  .prof-edit{grid-column:2;grid-row:1 / 6;align-self:center;font-size:11px;padding:9px 18px;margin-top:0;width:auto;}
+  .recipe-mini-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .prof-stats{grid-template-columns:repeat(6,1fr);gap:8px;}
+  .ach-grid{grid-template-columns:repeat(3,1fr);gap:9px;}
+  .ing-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;}
+  .cup-wrap{max-width:620px;margin-left:auto;margin-right:auto;}
+  .brew-acts{max-width:620px;margin-left:auto;margin-right:auto;gap:10px;}
+  .sub-tabs{max-width:560px;margin-left:auto;margin-right:auto;}
+  .bnav{padding:8px 12px 12px;gap:6px;}
+  .nb{flex-direction:row;justify-content:center;gap:7px;min-height:44px;border-radius:11px;padding:8px 10px;}
+  .nb.on{background:var(--cr);}
+  .nb .ni{font-size:20px;}
+  .nb .nl{font-size:11px;}
+  .nb .nd{display:none;}
+  .toast{bottom:84px;font-size:12px;}
+}
+@media (min-width:1020px){
+  .qcard{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:18px;align-items:center;}
+  .qcard .btn-s{min-width:132px;}
+  .miss-card{padding:11px 12px;}
+  .podium{max-width:640px;margin-left:auto;margin-right:auto;}
+}
+@media (max-width:520px){
+  #app{border-radius:0;}
+  .hdr{gap:6px;padding-left:11px;padding-right:11px;}
+  .logo-tx{font-size:11px;max-width:112px;}
+  .hdr-actions{gap:4px;}
+  .star-chip,.lvl-chip,.combo-chip{min-height:26px;}
+  .star-chip{padding:4px 7px;font-size:11px;gap:3px;}
+  .star-chip .star-ic{font-size:12px;}
+  .lvl-chip,.combo-chip{padding:4px 7px;font-size:9px;}
+}
+@media (max-width:360px){
+  .logo-tx{max-width:84px;}
+  .star-chip{padding-left:6px;padding-right:6px;}
+  .lvl-chip,.combo-chip{padding-left:6px;padding-right:6px;}
+}
+@media (max-width:759px){
+  .home-layout,.orders-layout,.shop-layout,.profile-layout{display:block;}
+  .order-col,.shop-recipes{background:none;border:0;border-radius:0;padding:0;}
+  .profile-content{display:block;}
+  .prof-avatar{display:none;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ONBOARD -->
+<div class="scr on" id="s-ob">
+  <div class="ob-card">
+    <div style="font-size:46px;margin-bottom:6px;animation:fc 3s ease-in-out infinite">☕</div>
+    <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:var(--e);margin-bottom:2px">Dream Coffee</div>
+    <div style="font-size:10px;color:var(--tl);margin-bottom:14px">Стань найкращим барістою!</div>
+    <input class="ob-inp" id="ob-nick" placeholder="Твій нікнейм..." maxlength="20">
+    <div style="font-size:9px;font-weight:700;color:var(--e);text-align:left;margin-bottom:5px">Обери аватар:</div>
+    <div class="ava-grid" id="ava-grid"></div>
+    <button class="btn-p" onclick="finishOB()">Почати гру ☕</button>
+  </div>
+</div>
+
+<!-- QUEUE — has its own full-screen layout with nav -->
+<div class="scr" id="s-queue">
+  <div class="hdr">
+    <button class="back-btn" onclick="showMain()">←</button>
+    <div class="logo"><span class="logo-ic">☕</span><span class="logo-tx">DREAM COFFEE</span></div>
+    <div class="hdr-actions">
+      <div class="star-chip"><span class="star-ic">⭐</span><span class="mc-v">0</span></div>
+      <div class="combo-chip" id="q-combo">🔥<span id="q-cnum">2</span></div>
+    </div>
+  </div>
+  <div class="sb">
+    <div class="pt">Замовлення 📦</div>
+    <div class="ps">Чим швидше — тим більше чайових!</div>
+    <div id="qlist"></div>
+  </div>
+</div>
+
+<!-- BREW — has its own full-screen layout with nav -->
+<div class="scr" id="s-brew">
+  <div class="hdr">
+    <button class="back-btn" onclick="brewBack()">←</button>
+    <div class="logo"><span class="logo-ic">☕</span><span class="logo-tx">DREAM COFFEE</span></div>
+    <div class="hdr-actions"><div class="star-chip"><span class="star-ic">⭐</span><span class="mc-v">0</span></div></div>
+  </div>
+  <div class="sb">
+    <div class="pt">Приготування ☕</div>
+    <div class="brew-banner">
+      <span id="ob-ico" style="font-size:22px">☕</span>
+      <div style="flex:1">
+        <div id="ob-name" style="font-family:'Playfair Display',serif;font-size:11px;font-weight:700;color:var(--e)">—</div>
+        <div id="ob-cl" style="font-size:9px;color:var(--tl);margin-top:1px">—</div>
+      </div>
+      <div class="ctimer">
+        <svg width="36" height="36" viewBox="0 0 46 46">
+          <circle cx="23" cy="23" r="19" fill="none" stroke="var(--bd)" stroke-width="3.5"/>
+          <circle id="brew-arc" cx="23" cy="23" r="19" fill="none" stroke="#388E3C" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="119.38" stroke-dashoffset="0"/>
+        </svg>
+        <div class="ct-lb" id="brew-tlb">—</div>
+      </div>
+    </div>
+    <div class="phase-bar">
+      <div class="ph-btn active" id="ph1">① Додай</div>
+      <div class="ph-btn" id="ph2">② Змішай</div>
+      <div class="ph-btn" id="ph3">③ Подай</div>
+    </div>
+    <div class="req-row" id="reqrow"></div>
+    <div style="font-family:'Playfair Display',serif;font-size:11px;font-weight:700;color:var(--e);margin-bottom:6px">Інгредієнти</div>
+    <div class="ing-grid" id="igrid"></div>
+    <div class="cup-wrap">
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <svg viewBox="0 0 160 155" fill="none" style="width:120px;height:116px;margin-bottom:6px">
+          <defs><clipPath id="cc"><path d="M26 44 L31 128 Q31 135 38 135 L122 135 Q129 135 129 128 L134 44 Z"/></clipPath></defs>
+          <rect id="liq" x="26" y="135" width="108" height="0" clip-path="url(#cc)" fill="transparent" style="transition:y .5s cubic-bezier(.25,.46,.45,.94),height .5s cubic-bezier(.25,.46,.45,.94),fill .4s"/>
+          <ellipse id="foam-el" cx="80" cy="135" rx="46" ry="5" fill="rgba(255,248,220,0.8)" clip-path="url(#cc)" opacity="0" style="transition:opacity .5s,cy .5s"/>
+          <g id="stm-g" opacity="0" style="transition:opacity .4s">
+            <path class="stm" d="M58 38 Q63 29 58 21" stroke="#C8A888" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path class="stm" d="M80 34 Q85 25 80 17" stroke="#C8A888" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path class="stm" d="M102 38 Q107 29 102 21" stroke="#C8A888" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <path d="M26 44 L31 128 Q31 135 38 135 L122 135 Q129 135 129 128 L134 44 Z" fill="white" stroke="#E0C8A8" stroke-width="2"/>
+          <rect x="19" y="38" width="122" height="12" rx="6" fill="white" stroke="#E0C8A8" stroke-width="2"/>
+          <ellipse cx="80" cy="139" rx="54" ry="6" fill="white" stroke="#E0C8A8" stroke-width="2"/>
+          <path d="M129 64 Q150 64 150 86 Q150 108 129 108" stroke="#E0C8A8" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div id="mix-lbl" style="font-size:10px;font-weight:700;color:var(--tl);margin-bottom:4px">Чашка порожня</div>
+        <div id="cstats" style="display:grid;grid-template-columns:1fr 1fr;gap:3px;width:100%">
+          <div style="background:var(--cr);border-radius:6px;padding:3px 5px;display:flex;justify-content:space-between;grid-column:1/-1">
+            <span style="font-size:8px;color:var(--tl)">Інгредієнти</span><span style="font-size:9px;font-weight:700">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="brew-acts">
+      <button class="btn-clear" onclick="clearBrew()">🗑️ Очистити</button>
+      <button class="btn-mix" id="btnMix" onclick="doMix()" disabled>⚗️ Змішати</button>
+      <button class="btn-serve" id="btnServe" onclick="serve()" disabled>✅ Подати!</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN TABS -->
+<div class="scr" id="s-main">
+  <div class="hdr">
+    <div class="logo"><span class="logo-ic">☕</span><span class="logo-tx">DREAM COFFEE</span></div>
+    <div class="hdr-actions">
+      <div class="star-chip"><span class="star-ic">⭐</span><span class="mc-v">0</span></div>
+      <div class="combo-chip" id="m-combo">🔥<span id="m-cnum">2</span></div>
+      <div class="lvl-chip" id="m-lvl">Рів.1</div>
+    </div>
+  </div>
+  <div class="sb" id="main-sb"></div>
+  <div class="bnav">
+    <button class="nb on" onclick="setTab('home')" id="nb-home"><span class="ni">🏠</span><span class="nl">Головна</span><div class="nd"></div></button>
+    <button class="nb" onclick="setTab('missions')" id="nb-missions"><span class="ni">🎯</span><span class="nl">Місії</span><div class="nd"></div></button>
+    <button class="nb" onclick="setTab('orders')" id="nb-orders"><span class="ni">📋</span><span class="nl">Замовлення</span><div class="nd"></div></button>
+    <button class="nb" onclick="setTab('shop')" id="nb-shop"><span class="ni">🛍️</span><span class="nl">Магазин</span><div class="nd"></div></button>
+    <button class="nb" onclick="setTab('leaderboard')" id="nb-leaderboard"><span class="ni">🏆</span><span class="nl">Рейтинг</span><div class="nd"></div></button>
+    <button class="nb" onclick="setTab('profile')" id="nb-profile"><span class="ni">👤</span><span class="nl">Профіль</span><div class="nd"></div></button>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="overlay" id="res-ov">
+  <div class="m-card">
+    <div id="r-ico" style="font-size:52px;margin-bottom:7px;animation:fc 3s ease-in-out infinite">☕</div>
+    <div id="r-ti" style="font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--e);margin-bottom:2px">Виконано!</div>
+    <div id="r-su" style="font-size:9px;color:var(--tl);margin-bottom:8px"></div>
+    <div id="r-ea" style="margin-bottom:12px"></div>
+    <button class="btn-p" onclick="closeResult()">Наступне замовлення →</button>
+  </div>
+</div>
+<div class="overlay" id="lvl-ov">
+  <div class="lv-card">
+    <div style="font-size:40px;margin-bottom:6px">🎉</div>
+    <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:900;margin-bottom:2px">Новий рівень!</div>
+    <div id="lvl-n" style="font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:var(--t);margin-bottom:6px">2</div>
+    <div id="lvl-d" style="font-size:10px;opacity:.85;margin-bottom:13px"></div>
+    <button class="btn-p" style="background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.35)" onclick="closeOv('lvl-ov')">Продовжити 💪</button>
+  </div>
+</div>
+<div class="overlay" id="pm-ov">
+  <div class="m-card">
+    <div id="pm-ava" style="font-size:44px;margin-bottom:5px">☕</div>
+    <div id="pm-nick" style="font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--e);margin-bottom:2px">—</div>
+    <div id="pm-stars" style="font-size:13px;color:var(--c);margin-bottom:8px"></div>
+    <div id="pm-stats" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:12px"></div>
+    <button class="btn-p" onclick="closeOv('pm-ov')">Закрити</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="notif" id="notif"></div>
+
+<script>
+// ═══ DATA ═══
+// Recipes with unlock level
+var REC = [
+  {n:"Еспресо",      e:"☕", b:["coffee","water"],           unlockLvl:1},
+  {n:"Американо",    e:"🖤", b:["coffee","water","water"],    unlockLvl:1},
+  {n:"Лате",         e:"🥛", b:["coffee","milk","milk"],      unlockLvl:1},
+  {n:"Капучіно",     e:"☕", b:["coffee","milk","cream"],     unlockLvl:2},
+  {n:"Крем-кава",    e:"🫧", b:["coffee","cream","sugar"],    unlockLvl:2},
+  {n:"Айс-кофе",     e:"🧊", b:["coffee","water","ice"],      unlockLvl:3},
+  {n:"Айс-лате",     e:"🧊", b:["coffee","milk","ice"],       unlockLvl:3},
+  {n:"Айс-американо",e:"🧊", b:["coffee","water","ice","ice"],unlockLvl:3},
+  {n:"Солодкий лате",e:"🍬", b:["coffee","milk","sugar"],     unlockLvl:4}
+];
+
+// Special recipes with unlock level (need syrups purchased)
+var SPEC = [
+  {n:"Полунична кава",      e:"🍓", b:["coffee","strawberry","milk"],     unlockLvl:2, reward:1.7},
+  {n:"Банановий лате", e:"🍌", b:["coffee","banana","milk"],       unlockLvl:2, reward:1.6},
+  {n:"Какао",               e:"🍫", b:["cocoa","milk","sugar"],           unlockLvl:3, reward:1.5},
+  {n:"Мокко",               e:"🍫", b:["coffee","cocoa","milk"],          unlockLvl:3, reward:1.7},
+  {n:"Матча",               e:"🍵", b:["matcha","water"],                unlockLvl:4, reward:1.4},
+  {n:"Матча Лате",          e:"🍵", b:["matcha","milk","milk"],          unlockLvl:4, reward:1.6},
+  {n:"Какао з вершками",    e:"🍫", b:["cocoa","milk","cream"],          unlockLvl:4, reward:1.7},
+  {n:"Карамельний Макіато", e:"🍮", b:["coffee","milk","caramel","sugar"],unlockLvl:4, reward:1.8},
+  {n:"Шоколадний Мокачіно", e:"🍫", b:["coffee","chocolate","milk","cream"],unlockLvl:4,reward:2.0},
+  {n:"Айс-матча",           e:"🍵", b:["matcha","milk","ice"],           unlockLvl:5, reward:1.8},
+  {n:"Пряний какао",        e:"🍫", b:["cocoa","milk","cinnamon"],       unlockLvl:5, reward:1.9},
+  {n:"Лавандовий Лате",     e:"💜", b:["milk","lavender","sugar"],        unlockLvl:5, reward:1.9}
+];
+
+// Base ingredients
+var BI = [
+  {id:"coffee", n:"Кава",   e:"☕", c:[59,26,8],   hot:true, foam:false},
+  {id:"milk",   n:"Молоко", e:"🥛", c:[245,240,220],hot:false,foam:true},
+  {id:"water",  n:"Вода",   e:"💧", c:[180,212,235],hot:false,foam:false},
+  {id:"sugar",  n:"Цукор",  e:"🍬", c:[245,237,214],hot:false,foam:false},
+  {id:"ice",    n:"Лід",    e:"🧊", c:[195,228,242],hot:false,foam:false},
+  {id:"cream",  n:"Вершки", e:"🫙", c:[255,248,220],hot:false,foam:true}
+];
+
+// Shop items with unlock level requirement
+var SI = [
+  {id:"strawberry",n:"Полун. сироп",  e:"🍓",c:[232,80,106], p:200,cat:"Сиропи",unlockLvl:1},
+  {id:"banana",   n:"Банановий",     e:"🍌",c:[238,211,89], p:210,cat:"Сиропи",unlockLvl:1},
+  {id:"vanilla",  n:"Ванільний",     e:"🌸",c:[245,199,160],p:220,cat:"Сиропи",unlockLvl:2},
+  {id:"cocoa",    n:"Какао",         e:"🍫",c:[96,53,31],   p:260,cat:"Основи",unlockLvl:3},
+  {id:"caramel",  n:"Карамельний",   e:"🍮",c:[200,129,58], p:270,cat:"Сиропи",unlockLvl:3},
+  {id:"chocolate",n:"Шоколадний",    e:"🍫",c:[74,35,8],    p:280,cat:"Сиропи",unlockLvl:3},
+  {id:"cinnamon", n:"Кориця",        e:"🪵",c:[139,69,19],  p:200,cat:"Спеції",unlockLvl:4},
+  {id:"hazelnut", n:"Горіховий",     e:"🌰",c:[139,105,20], p:290,cat:"Сиропи",unlockLvl:4},
+  {id:"matcha",   n:"Матча",         e:"🍵",c:[125,187,111],p:350,cat:"Основи",unlockLvl:4},
+  {id:"lavender", n:"Лавандовий",    e:"💜",c:[155,89,182], p:380,cat:"Сиропи",unlockLvl:5}
+];
+
+var CLIENTS = [
+  {n:"Оля",a:"👩"},{n:"Максим",a:"👨"},{n:"Катя",a:"🧒"},
+  {n:"Дмитро",a:"👴"},{n:"Надя",a:"👧"},{n:"Михайло",a:"🧑"},
+  {n:"Аня",a:"👱‍♀️"},{n:"Сергій",a:"🧔"},{n:"Ліза",a:"👩‍🦰"}
+];
+var AVATS = ["☕","🧑‍🍳","👩‍🍳","⭐","🔥","💎","🍵","🌟","🧑‍🎨","🫖"];
+
+// Levels — each level unlocks new recipes/shop items, changes difficulty
+var LVS = [
+  {n:1,name:"Новачок",xp:0,   max:6,wm:1.0, sc:0,  uc:0,  mc:0,  desc:"Доступні: Еспресо, Американо, Лате"},
+  {n:2,name:"Учень",  xp:200, max:6,wm:.95, sc:0,  uc:.1, mc:.1, desc:"Нові рецепти: Капучіно, Крем-кава + нові сиропи 🔥"},
+  {n:3,name:"Бариста",xp:600, max:6,wm:.85, sc:.15,uc:.15,mc:.2, desc:"Нові рецепти: айс-кава, какао та мокко"},
+  {n:4,name:"Майстер",xp:1400,max:6,wm:.75, sc:.25,uc:.2, mc:.3, desc:"Матча, матча-лате та складні рецепти 🔒"},
+  {n:5,name:"Експерт",xp:2800,max:6,wm:.65, sc:.35,uc:.25,mc:.4, desc:"6 замовлень одночасно + айс-матча та пряний какао"},
+  {n:6,name:"Шеф",    xp:5000,max:6,wm:.55, sc:.4, uc:.3, mc:.5, desc:"Час мінімальний. Тільки профі!"},
+  {n:7,name:"Легенда",xp:9000,max:7,wm:.45, sc:.5, uc:.35,mc:.6, desc:"Максимальна складність 🏆"}
+];
+
+var MS = [
+  {id:"m1", n:"Перші кроки",    desc:"Зварити 1 каву",       e:"☕",goal:1,   type:"brews",  rew:50,  xp:20},
+  {id:"m2", n:"Ранковий рух",   desc:"Зварити 5 кав",        e:"🌅",goal:5,   type:"brews",  rew:150, xp:50},
+  {id:"m3", n:"Перший дохід",   desc:"Заробити 200 зірок",   e:"💰",goal:200, type:"earned", rew:100, xp:40},
+  {id:"m4", n:"Швидкий бариста",desc:"3 чайових",            e:"⚡",goal:3,   type:"tips",   rew:200, xp:60},
+  {id:"m5", n:"Кавовий магнат", desc:"1000 зірок",           e:"💎",goal:1000,type:"earned", rew:300, xp:100},
+  {id:"m6", n:"Дюжина",         desc:"Зварити 12 кав",       e:"🎯",goal:12,  type:"brews",  rew:250, xp:80},
+  {id:"m7", n:"Спеціаліст",     desc:"3 особливих замовлення",e:"⭐",goal:3,  type:"specials",rew:400,xp:120},
+  {id:"m8", n:"Невпинний",      desc:"Зварити 30 кав",       e:"🏃",goal:30,  type:"brews",  rew:600, xp:200},
+  {id:"m9", n:"Мільйонер",      desc:"5000 зірок",           e:"🤑",goal:5000,type:"earned", rew:1000,xp:350},
+  {id:"m10",n:"Легенда міста",  desc:"Зварити 100 кав",      e:"🏆",goal:100, type:"brews",  rew:2000,xp:500}
+];
+
+// Static LB — xpEq for score calculation
+var LB_S = [
+  {n:"Aroma Cafe",    e:"☕",r:4.8,rev:312,xpEq:8500},
+  {n:"Black Cup",     e:"🖤",r:4.5,rev:198,xpEq:5200},
+  {n:"Milk and More", e:"🥛",r:4.2,rev:145,xpEq:3000},
+  {n:"Brew Station",  e:"⚗️",r:3.9,rev:87, xpEq:1600},
+  {n:"The Roastery",  e:"🫘",r:3.7,rev:64, xpEq:900}
+];
+
+// Review texts — max stars depend on player level (new players can't get 5 stars easily)
+var REV_TXT = {
+  5:["Кав'ярня стала ідеальною!","Неймовірний прогрес за цей час!","Щодня краще і краще!","Тепер мій улюблений заклад!"],
+  4:["Дуже смачно, дякую!","Швидко і якісно","Помітний прогрес! Молодці","Майже ідеально!"],
+  3:["Непогано, але є куди рости","Кава хороша, але довго чекав","Середнє враження, є потенціал"],
+  2:["Довго чекав, кава охолола","Занадто повільне обслуговування","Потрібно більше практики"],
+  1:["Дуже довго чекати","Кава не за рецептом...","Потрібно значно покращитись"]
+};
+
+var CIRC = 2 * Math.PI * 19;
+
+// ═══ STATE ═══
+var prof=null, money=0, brews=0, dones=0, tipCount=0, specials=0, xp=0, totalEarned=0;
+var streak=0, lastDate="", combo=0, comboTmr=null;
+var reviews=[], cafeRating=0;
+var owned = new Set(BI.map(function(i){return i.id;}));
+var completedMissions = new Set();
+var queue=[], hist=[], timers={};
+var curOrd=null, mix={}, isMixed=false, phase=1;
+var curTab="home", profileSubTab="stats";
+var qInt=null, eventTmr=null, rushTmr=null, notifTmr=null, toastTmr=null;
+var selAva=AVATS[0], randomEvent=null;
+
+// ═══ HELPERS ═══
+function getLvl(){return LVS.filter(function(l){return xp>=l.xp;}).pop()||LVS[0];}
+function getNext(){var l=getLvl();var i=LVS.indexOf(l);return LVS[i+1]||null;}
+function getLvlN(){return getLvl().n;}
+function fmtT(s){s=Math.max(0,s);var m=Math.floor(s/60),sc=s%60;return m>0?m+"хв":sc+"с";}
+function starsStr(n){n=Math.max(0,Math.min(5,Math.round(n||0)));return "★".repeat(n)+"☆".repeat(5-n);}
+function calcScore(xpV,rV,revV){return Math.round(xpV*0.6+(rV*Math.min(revV,200))*2);}
+
+// Available recipes for current level
+function availRec(){
+  var lvl=getLvlN();
+  return REC.filter(function(r){return r.unlockLvl<=lvl;});
+}
+// Available special recipes for current level
+function availSpec(){
+  var lvl=getLvlN();
+  return SPEC.filter(function(r){return r.unlockLvl<=lvl && r.b.every(function(id){return owned.has(id);});});
+}
+
+function allIng(){return BI.concat(SI.filter(function(i){return owned.has(i.id);}));}
+
+function blend(mx){
+  var e=Object.entries(mx).filter(function(x){return x[1]>0;});
+  if(!e.length)return null;
+  var r=245,g=240,b=220,tw=0;
+  e.forEach(function(x){
+    var ing=allIng().find(function(a){return a.id===x[0];});
+    if(!ing)return;
+    r=(r*tw+ing.c[0]*x[1])/(tw+x[1]);
+    g=(g*tw+ing.c[1]*x[1])/(tw+x[1]);
+    b=(b*tw+ing.c[2]*x[1])/(tw+x[1]);
+    tw+=x[1];
+  });
+  return "rgb("+Math.round(r)+","+Math.round(g)+","+Math.round(b)+")";
+}
+
+// Review effect: rating affects client flow, tips, patience
+function getRevBonus(){
+  if(!reviews.length)return{tipBonus:0,waitBonus:1.0,clientMult:1.0};
+  var r=cafeRating;
+  return{
+    tipBonus:   r>=4.5?0.15:r>=4.0?0.08:r>=3.5?0.03:0,
+    waitBonus:  r>=4.0?1.12:r>=3.0?1.0:0.88,
+    clientMult: r>=4.5?1.4:r>=4.0?1.25:r>=3.5?1.1:r>=3.0?1.0:r>=2.0?0.85:0.7
+  };
+}
+
+// Max stars a player can receive based on level — new players can't get 5 stars
+function maxReviewStars(){
+  var lvl=getLvlN();
+  if(lvl<=2)return 3;
+  if(lvl<=3)return 4;
+  return 5;
+}
+
+function mkOrd(){
+  var lvl=getLvl(), rb=getRevBonus();
+  var arec=availRec(), aspec=availSpec();
+  var rec, isSp=false;
+  if(lvl.sc>0 && aspec.length && Math.random()<lvl.sc){
+    rec=Object.assign({},aspec[Math.floor(Math.random()*aspec.length)]);isSp=true;
+  } else if(arec.length){
+    rec=Object.assign({},arec[Math.floor(Math.random()*arec.length)]);
+  } else {
+    rec=Object.assign({},REC[0]);
+  }
+  var cl=CLIENTS[Math.floor(Math.random()*CLIENTS.length)];
+  var isU=Math.random()<lvl.uc;
+  var cups=Math.random()<lvl.mc?2:1;
+  var rb2=getRevBonus();
+  var baseP=isSp?Math.round((60+Math.floor(Math.random()*4)*10)*.87):Math.round((25+Math.floor(Math.random()*4)*8)*.87);
+  var base=Math.round(baseP*(rec.reward||1))*cups;
+  var bw=Math.round((100+Math.random()*60)*lvl.wm*rb2.waitBonus);
+  return{
+    id:"O"+Date.now()+Math.floor(Math.random()*9999),
+    rec:rec,cl:cl,wait:isU?Math.round(bw*.6):bw,elapsed:0,
+    base:base,cups:cups,isSp:isSp,isU:isU,
+    status:"waiting",earned:0,tip:0,tipBonus:rb2.tipBonus
+  };
+}
+
+// ═══ STORAGE ═══
+function saveSt(){
+  if(!prof)return;
+  try{
+    localStorage.setItem("dc3_save",JSON.stringify({
+      nick:prof.nick,ava:prof.ava,
+      money:money,brews:brews,dones:dones,tipCount:tipCount,
+      specials:specials,xp:xp,totalEarned:totalEarned,
+      streak:streak,lastDate:lastDate,reviews:reviews,cafeRating:cafeRating,
+      owned:Array.from(owned),cm:Array.from(completedMissions)
+    }));
+  }catch(e){}
+  try{
+    var lb=JSON.parse(localStorage.getItem("dc3_lb")||"[]");
+    var i=lb.findIndex(function(x){return x.nick===prof.nick;});
+    var entry={nick:prof.nick,ava:prof.ava,r:cafeRating,rev:reviews.length,brews:brews,xp:xp};
+    if(i>=0)lb[i]=entry;else lb.push(entry);
+    localStorage.setItem("dc3_lb",JSON.stringify(lb));
+  }catch(e){}
+}
+function loadSt(){
+  try{
+    var d=JSON.parse(localStorage.getItem("dc3_save")||"null");
+    if(d&&d.nick){
+      prof={nick:d.nick,ava:d.ava};
+      money=d.money||0;brews=d.brews||0;dones=d.dones||0;tipCount=d.tipCount||0;
+      specials=d.specials||0;xp=d.xp||0;totalEarned=d.totalEarned||0;
+      streak=d.streak||0;lastDate=d.lastDate||"";
+      reviews=d.reviews||[];cafeRating=d.cafeRating||0;
+      owned=new Set(d.owned||BI.map(function(i){return i.id;}));
+      completedMissions=new Set(d.cm||[]);
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+function getLB(){try{return JSON.parse(localStorage.getItem("dc3_lb")||"[]");}catch(e){return[];}}
+
+// ═══ UI ═══
+function showScr(id){document.querySelectorAll(".scr").forEach(function(s){s.classList.remove("on");});document.getElementById(id).classList.add("on");}
+function openOv(id){document.getElementById(id).classList.add("on");}
+function closeOv(id){document.getElementById(id).classList.remove("on");}
+function toast(msg){
+  var t=document.getElementById("toast");t.textContent=msg;t.classList.add("on");
+  clearTimeout(toastTmr);toastTmr=setTimeout(function(){t.classList.remove("on");},2600);
+}
+function notif(msg){
+  var n=document.getElementById("notif");n.textContent=msg;n.classList.add("on");
+  clearTimeout(notifTmr);notifTmr=setTimeout(function(){n.classList.remove("on");},3200);
+}
+function syncUI(){
+  document.querySelectorAll(".mc-v").forEach(function(e){e.textContent=money;});
+  var ml=document.getElementById("m-lvl");if(ml)ml.textContent="Рів."+getLvlN();
+  saveSt();
+}
+function updateComboUI(){
+  var on=combo>=2;
+  var ns=String(combo);
+  ["q-combo","m-combo"].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.style.display=on?"flex":"none";
+  });
+  var qn=document.getElementById("q-cnum");if(qn)qn.textContent=ns;
+  var mn=document.getElementById("m-cnum");if(mn)mn.textContent=ns;
+}
+
+// ═══ COMBO ═══
+function addCombo(){
+  combo++;clearTimeout(comboTmr);
+  if(combo>=2)notif("🔥 КОМБО ×"+combo+"! Множник ×"+getComboMult().toFixed(1));
+  comboTmr=setTimeout(function(){if(combo>1)toast("💧 Комбо скинуто");combo=0;updateComboUI();},25000);
+  updateComboUI();
+}
+function getComboMult(){return combo>=5?2.0:combo>=4?1.7:combo>=3?1.5:combo>=2?1.2:1.0;}
+
+// ═══ XP / LEVELS ═══
+function addXP(amt){
+  var old=getLvl();xp+=amt;var nw=getLvl();
+  if(nw.n>old.n){
+    setTimeout(function(){
+      document.getElementById("lvl-n").textContent=nw.n;
+      document.getElementById("lvl-d").textContent=nw.name+": "+nw.desc;
+      openOv("lvl-ov");
+    },500);
+  }
+  syncUI();
+}
+
+// ═══ MISSIONS ═══
+function checkMissions(){
+  MS.forEach(function(m){
+    if(completedMissions.has(m.id))return;
+    var cur=m.type==="brews"?brews:m.type==="earned"?totalEarned:m.type==="tips"?tipCount:specials;
+    if(cur>=m.goal){
+      completedMissions.add(m.id);money+=m.rew;totalEarned+=m.rew;
+      addXP(m.xp);notif("🎯 "+m.n+" +"+m.rew+"⭐");syncUI();
+      if(curTab==="missions")renderTab("missions");
+    }
+  });
+}
+
+// ═══ REVIEWS ═══
+function genReview(cl,frac,drinkName){
+  var ms=maxReviewStars();
+  // Stars based on speed AND capped by player level
+  var speedStars=frac>.65?5:frac>.45?4:frac>.25?3:2;
+  var stars=Math.min(ms,speedStars);
+  var txts=REV_TXT[stars]||REV_TXT[3];
+  var text=txts[Math.floor(Math.random()*txts.length)];
+  return{client:cl,stars:stars,text:text,drink:drinkName,time:new Date().toLocaleTimeString("uk-UA",{hour:"2-digit",minute:"2-digit"})};
+}
+
+// ═══ ONBOARD ═══
+function initAva(){
+  document.getElementById("ava-grid").innerHTML=AVATS.map(function(a,i){
+    return '<button class="ava-btn'+(i===0?" sel":"")+'" onclick="pickAva(this,\''+a+'\')">'+a+"</button>";
+  }).join("");
+}
+function pickAva(el,a){
+  selAva=a;
+  document.querySelectorAll(".ava-btn").forEach(function(b){b.classList.remove("sel");});
+  el.classList.add("sel");
+}
+function finishOB(){
+  var n=document.getElementById("ob-nick").value.trim();
+  if(!n){toast("Введи нікнейм!");return;}
+  prof={nick:n,ava:selAva};
+  money=0;brews=0;dones=0;tipCount=0;specials=0;xp=0;totalEarned=0;
+  streak=1;lastDate=new Date().toDateString();reviews=[];cafeRating=0;combo=0;
+  owned=new Set(BI.map(function(i){return i.id;}));
+  completedMissions=new Set();
+  saveSt();startGame();
+}
+
+// ═══ START ═══
+function startGame(){
+  var today=new Date().toDateString();
+  var yest=new Date(Date.now()-86400000).toDateString();
+  if(lastDate!==today){
+    var ns=lastDate===yest?streak+1:1;
+    streak=ns;lastDate=today;
+    var bonus=ns*20;money+=bonus;totalEarned+=bonus;
+    setTimeout(function(){notif("🔥 День "+ns+" поспіль! +"+bonus+"⭐");},1500);
+  }
+  syncUI();queue=[];hist=[];
+  for(var i=0;i<getLvl().max;i++){var o=mkOrd();queue.push(o);hist.push(Object.assign({},o));}
+  startTimers();
+  if(qInt)clearInterval(qInt);
+  qInt=setInterval(function(){
+    var lv=getLvl(),rb=getRevBonus();
+    var effMax=Math.max(lv.max,Math.round(lv.max*rb.clientMult));
+    var active=queue.filter(function(o){return o.status!=="done"&&o.status!=="missed";}).length;
+    if(active<effMax){
+      var no=mkOrd();queue.push(no);hist.push(Object.assign({},no));startTimers();
+      if(document.getElementById("s-queue").classList.contains("on"))renderQueue();
+      if(curTab==="orders")renderTab("orders");
+      if(no.isSp)notif("⭐ Особливе замовлення!");else if(no.isU)notif("🔥 Термінове!");
+    }
+  },15000);
+  scheduleRush();scheduleEvent();
+  showScr("s-main");setTab("home");
+}
+
+// ═══ RUSH / EVENTS ═══
+function scheduleRush(){
+  if(rushTmr)clearTimeout(rushTmr);
+  rushTmr=setTimeout(function(){
+    toast("⚡ RUSH HOUR! +3 замовлення!");
+    for(var i=0;i<3;i++){
+      (function(idx){
+        setTimeout(function(){
+          var o=mkOrd();queue.push(o);hist.push(Object.assign({},o));startTimers();
+          if(document.getElementById("s-queue").classList.contains("on"))renderQueue();
+        },idx*4000);
+      })(i);
+    }
+    scheduleRush();
+  },180000+Math.random()*60000);
+}
+function scheduleEvent(){
+  if(eventTmr)clearTimeout(eventTmr);
+  eventTmr=setTimeout(function(){
+    var evs=[
+      {msg:"👑 VIP клієнт! Наступне ×2!",fn:function(){randomEvent="vip";}},
+      {msg:"📱 Блогер написав! +40XP!",fn:function(){addXP(40);}},
+      {msg:"💰 Знайшов монету! +25⭐!",fn:function(){money+=25;totalEarned+=25;syncUI();}},
+      {msg:"🎉 Фестиваль! ×1.3 на 90 сек!",fn:function(){randomEvent="festival";setTimeout(function(){randomEvent=null;},90000);}}
+    ];
+    var ev=evs[Math.floor(Math.random()*evs.length)];
+    notif(ev.msg);ev.fn();scheduleEvent();
+  },120000+Math.random()*60000);
+}
+
+// ═══ NAVIGATION ═══
+function showMain(){showScr("s-main");renderTab(curTab);}
+function openOrdersTab(){setTab("orders");}
+function goQueue(){openOrdersTab();}
+function brewBack(){
+  if(curOrd){
+    var o=queue.find(function(q){return q.id===curOrd.id;});
+    if(o&&o.status==="brewing"){
+      o.status="waiting";
+      var h=hist.find(function(x){return x.id===curOrd.id;});if(h)h.status="waiting";
+    }
+  }
+  curOrd=null;mix={};isMixed=false;
+  setTab("orders");
+}
+function goBrew(id){
+  var o=queue.find(function(q){return q.id===id;});
+  if(!o||o.status==="brewing")return;
+  o.status="brewing";
+  var h=hist.find(function(x){return x.id===id;});if(h)h.status="brewing";
+  curOrd=o;mix={};isMixed=false;phase=1;
+  setupBrew();showScr("s-brew");
+  renderQueue();if(curTab==="orders")renderTab("orders");
+}
+function setTab(t){
+  curTab=t;
+  document.querySelectorAll(".nb").forEach(function(b){b.classList.remove("on");});
+  var nb=document.getElementById("nb-"+t);if(nb)nb.classList.add("on");
+  showScr("s-main");renderTab(t);
+}
+// Go to queue from orders tab, then brew specific order
+function goQueueBrew(id){goBrew(id);}
+
+// ═══ TABS ═══
+function renderTab(t){
+  var sb=document.getElementById("main-sb");if(!sb)return;
+  sb.setAttribute("data-tab",t);
+  if(t==="home")sb.innerHTML=renderHome();
+  else if(t==="missions")sb.innerHTML=renderMissions();
+  else if(t==="orders")sb.innerHTML=renderOrders();
+  else if(t==="shop")sb.innerHTML=renderShop();
+  else if(t==="leaderboard")sb.innerHTML=renderLeaderboard();
+  else if(t==="profile")sb.innerHTML=renderProfile();
+}
+
+function pf(s){return "font-family:'Playfair Display',serif;"+s;}
+
+// ─── HOME ───
+function renderHome(){
+  var lvl=getLvl(),next=getNext();
+  var xpPct=next?Math.round((xp-lvl.xp)/(next.xp-lvl.xp)*100):100;
+  var active=queue.filter(function(o){return o.status!=="done"&&o.status!=="missed";});
+  var urg=active.filter(function(o){return o.isU;}).length;
+  var spc=active.filter(function(o){return o.isSp;}).length;
+  var am=MS.find(function(m){return !completedMissions.has(m.id);});
+  var amCur=am?(am.type==="brews"?brews:am.type==="earned"?totalEarned:am.type==="tips"?tipCount:specials):0;
+  var rb=getRevBonus();
+  var h='<div class="home-layout"><div class="hero">'
+    +'<div style="font-size:9px;background:rgba(255,255,255,.15);display:inline-block;border-radius:20px;padding:2px 7px;margin-bottom:6px;font-weight:700">⚡ Рівень '+lvl.n+' · '+lvl.name+'</div>'
+    +'<div style="'+pf('font-size:17px;font-weight:900;margin-bottom:5px')+'">Привіт, '+(prof?prof.nick:"Бариста")+'!</div>'
+    +'<div style="font-size:10px;opacity:.82;margin-bottom:12px">Готуй каву, збирай відгуки, підіймайся!</div>'
+    +'<button class="btn-p" style="background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.35)" onclick="openOrdersTab()">☕ До замовлень</button>'
+    +'<span class="hero-cup">☕</span>'
+    +(next?'<div class="xpbar"><div class="xpfill" style="width:'+xpPct+'%"></div></div><div style="font-size:8px;opacity:.65;margin-top:2px">XP '+xp+"/"+next.xp+" → Рів."+next.n+"</div>"
+          :'<div style="font-size:9px;margin-top:4px;opacity:.8">🏆 Максимальний рівень!</div>')
+    +'</div><div class="home-side">';
+  h+='<div class="stat-row">'
+    +'<div class="stat-box"><div style="font-size:14px;margin-bottom:2px">⭐</div><div style="'+pf('font-size:13px;font-weight:700;color:var(--e)')+'">'+money+'</div><div style="font-size:8px;color:var(--tl)">Баланс</div></div>'
+    +'<div class="stat-box"><div style="font-size:14px;margin-bottom:2px">☕</div><div style="'+pf('font-size:13px;font-weight:700;color:var(--e)')+'">'+brews+'</div><div style="font-size:8px;color:var(--tl)">Зварено</div></div>'
+    +'<div class="stat-box"><div style="font-size:14px;margin-bottom:2px">⭐</div><div style="'+pf('font-size:13px;font-weight:700;color:var(--e)')+'">'+xp+'</div><div style="font-size:8px;color:var(--tl)">XP</div></div>'
+    +'</div>';
+  if(streak>0){
+    h+='<div class="card" style="border-color:'+(streak>=7?"#D4A843":streak>=3?"#E65100":"var(--bd)")+'"><div style="display:flex;align-items:center;gap:7px">'
+      +'<span style="font-size:20px">'+(streak>=7?"🏆":streak>=3?"🔥":"📅")+'</span>'
+      +'<div><div style="'+pf('font-size:11px;font-weight:700')+'">'+streak+' день поспіль!</div>'
+      +'<div style="font-size:9px;color:var(--tl)">+'+streak*20+'⭐ при вході. '+(streak>=3?"Не переривай!":"Заходь завтра!")+'</div></div></div></div>';
+  }
+  if(combo>=2){
+    h+='<div class="card" style="border-color:#E65100"><div style="display:flex;align-items:center;gap:7px">'
+      +'<span style="font-size:18px">🔥</span>'
+      +'<div><div style="'+pf('font-size:11px;font-weight:700;color:#E65100')+'">КОМБО ×'+combo+'!</div>'
+      +'<div style="font-size:9px;color:var(--tl)">Множник ×'+getComboMult().toFixed(1)+'</div></div></div></div>';
+  }
+  if(reviews.length>=3){
+    var ricon=rb.clientMult>=1.3?"📈":rb.clientMult>=1.0?"😊":"📉";
+    var rtxt=rb.clientMult>=1.3?"+40% клієнтів, більше чайових!":rb.clientMult>=1.1?"+25% клієнтів":rb.clientMult>=1.0?"Звичайний потік":"⚠️ Мало клієнтів через слабкі відгуки";
+    h+='<div class="card"><div style="display:flex;align-items:center;gap:7px"><span style="font-size:18px">'+ricon+'</span>'
+      +'<div><div style="'+pf('font-size:11px;font-weight:700')+'">Репутація: '+starsStr(cafeRating)+' '+cafeRating.toFixed(1)+'/5</div>'
+      +'<div style="font-size:9px;color:var(--tl)">'+rtxt+'</div></div></div></div>';
+  }
+  if(active.length){
+    h+='<div class="card" style="border-color:'+(urg?"#C62828":spc?"#9C27B0":"var(--bd)")+'">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center">'
+      +'<div><div style="'+pf('font-size:11px;font-weight:700')+'">📦 '+active.length+' замовлень</div>'
+      +'<div style="font-size:9px;color:var(--tl)">'+(urg?"🔥 "+urg+" терм. ":"")+(spc?"⭐ "+spc+" особл.":"")+'</div></div>'
+      +'<button class="btn-s" onclick="openOrdersTab()">Варити →</button></div></div>';
+  }
+  h+='<div class="card"><div style="'+pf('font-size:11px;font-weight:700;margin-bottom:6px')+'">🎯 Активна місія</div>'
+    +(am?'<div style="display:flex;align-items:center;gap:7px">'
+      +'<span style="font-size:18px">'+am.e+'</span>'
+      +'<div style="flex:1"><div style="'+pf('font-size:10px;font-weight:700;color:var(--e)')+'">'+am.n+'</div>'
+      +'<div style="font-size:8px;color:var(--tl)">'+am.desc+'</div>'
+      +'<div class="miss-bar" style="margin-top:3px"><div class="miss-fill" style="width:'+Math.min(100,Math.round(amCur/am.goal*100))+'%"></div></div>'
+      +'<div style="font-size:8px;color:var(--tl);text-align:right">'+amCur+"/"+am.goal+'</div></div>'
+      +'<div style="font-weight:800;color:var(--c);font-size:9px">+'+am.rew+'⭐</div></div>'
+      :'<div style="font-size:10px;color:var(--tl);text-align:center">🏆 Усі місії виконано!</div>')
+    +'</div>';
+  h+=renderHomePreview();
+  h+='</div></div>';
+  return h;
+}
+
+function renderHomePreview(){
+  var lvl=getLvlN();
+  var unlocked=availRec().slice(0,6);
+  var next=REC.concat(SPEC).filter(function(r){return r.unlockLvl>lvl;}).sort(function(a,b){return a.unlockLvl-b.unlockLvl;}).slice(0,3);
+  var h='<div class="card home-preview"><div style="'+pf('font-size:11px;font-weight:700;color:var(--e);margin-bottom:2px')+'">📖 Меню сьогодні</div>'
+    +'<div style="font-size:9px;color:var(--tl)">Доступні напої та найближчі відкриття</div>';
+  h+='<div class="recipe-mini-grid">'+unlocked.map(function(r){
+    return '<div class="recipe-mini"><span>'+r.e+'</span><div>'+r.n+'</div></div>';
+  }).join("")+'</div>';
+  if(next.length){
+    h+='<div style="font-size:9px;font-weight:800;color:var(--e);margin-top:9px;margin-bottom:5px">Скоро відкриється</div>'
+      +next.map(function(r){
+        return '<div style="display:flex;align-items:center;justify-content:space-between;font-size:9px;color:var(--ti);padding:5px 0;border-top:1px solid rgba(228,208,180,.7)">'
+          +'<span>'+r.e+' '+r.n+'</span><span style="font-weight:800;color:var(--c)">Рів.'+r.unlockLvl+'</span></div>';
+      }).join("");
+  }
+  h+='</div>';
+  return h;
+}
+
+// ─── MISSIONS ───
+function renderMissions(){
+  var h='<div class="pt">Місії 🎯</div><div class="ps">Виконуй — отримуй нагороди!</div>';
+  MS.forEach(function(m){
+    var done=completedMissions.has(m.id);
+    var cur=m.type==="brews"?brews:m.type==="earned"?totalEarned:m.type==="tips"?tipCount:specials;
+    var pct=Math.min(100,Math.round(cur/m.goal*100));
+    h+='<div class="miss-card'+(done?" dn":"")+'">'
+      +'<div style="display:flex;align-items:center;gap:7px;margin-bottom:4px">'
+      +'<span style="font-size:18px">'+m.e+'</span>'
+      +'<div style="flex:1"><div style="'+pf('font-size:10px;font-weight:700;color:var(--e)')+'">'+m.n+'</div>'
+      +'<div style="font-size:8px;color:var(--tl)">'+m.desc+'</div></div>'
+      +'<div style="font-weight:800;color:'+(done?"#388E3C":"var(--c)")+';font-size:9px">'+(done?"✅":"+"+m.rew+"⭐")+'</div></div>'
+      +'<div class="miss-bar"><div class="miss-fill" style="width:'+pct+'%"></div></div>'
+      +'<div style="font-size:8px;color:var(--tl);text-align:right;margin-top:1px">'+(done?"Виконано!":cur+"/"+m.goal)+'</div></div>';
+  });
+  return h;
+}
+
+// ─── ORDERS ───
+function renderOrders(){
+  var active=hist.filter(function(o){return o.status==="waiting"||o.status==="brewing";});
+  var missed=hist.filter(function(o){return o.status==="missed";}).length;
+  var h='<div class="pt">Замовлення 📋</div><div class="ps">Активна черга та загальна статистика</div>'
+        +'<div class="orders-layout"><div class="order-col"><div class="sec-t">⏳ Активні</div>';
+  if(!active.length){
+    h+='<div style="text-align:center;padding:12px;color:var(--tl);font-size:10px">Немає активних</div>';
+  } else {
+    active.forEach(function(o){
+      var q=queue.find(function(x){return x.id===o.id;})||o;
+      var rem=Math.max(0,q.wait-q.elapsed),frac=rem/q.wait;
+      var col=frac>.5?"#388E3C":frac>.22?"#E65100":"#C62828";
+      var off=(CIRC*(1-frac)).toFixed(1);var br=o.status==="brewing";
+      h+='<div class="card">'
+        +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">'
+        +'<span style="font-size:8px;color:var(--tl)">'+o.cl.a+' '+o.cl.n+' · #'+o.id.slice(-4)+'</span>'
+        +'<span class="st-badge '+(br?"st-p":"st-w")+'">'+(br?"⏳":"⏰ Очікує")+'</span></div>'
+        +'<div style="display:flex;align-items:center;gap:7px;margin-bottom:7px">'
+        +'<span style="font-size:28px">'+o.rec.e+'</span>'
+        +'<div style="flex:1"><div style="'+pf('font-size:12px;font-weight:700;color:var(--e)')+'">'+o.rec.n+(o.cups>1?" ×"+o.cups:"")+'</div></div>'
+        +'<div class="ctimer">'
+        +'<svg width="36" height="36" viewBox="0 0 46 46" style="transform:rotate(-90deg)">'
+        +'<circle cx="23" cy="23" r="19" fill="none" stroke="var(--bd)" stroke-width="3.5"/>'
+        +'<circle id="oa-'+o.id+'" cx="23" cy="23" r="19" fill="none" stroke="'+col+'" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="'+CIRC.toFixed(1)+'" stroke-dashoffset="'+off+'"/>'
+        +'</svg><div class="ct-lb" id="ol-'+o.id+'">'+fmtT(rem)+'</div></div></div>'
+        +'<div style="display:flex;justify-content:space-between;align-items:center;padding-top:6px;border-top:1px solid var(--cr)">'
+        +'<span style="font-weight:700;font-size:10px">'+o.base+'⭐</span>'
+        +(!br?'<button class="btn-s" onclick="goQueueBrew(\''+o.id+'\')">☕ Зробити</button>'
+              :'<span style="font-size:9px;color:var(--tl)">В процесі...</span>')+'</div>'
+        +'<div class="prog-track"><div class="prog-fill" style="width:'+Math.round(frac*100)+'%"></div></div></div>';
+    });
+  }
+  h+='</div><div class="order-col"><div class="sec-t">📊 Підсумок</div>'
+    +'<div class="card" style="margin-bottom:8px"><div style="'+pf('font-size:12px;font-weight:800;color:var(--e);margin-bottom:7px')+'">Усі зроблені замовлення</div>'
+    +'<div class="prof-stats" style="grid-template-columns:repeat(2,1fr);margin-bottom:0">'
+    +'<div class="p-stat"><div style="'+pf('font-size:15px;font-weight:900;color:var(--e)')+'">'+dones+'</div><div style="font-size:8px;color:var(--tl)">Виконано</div></div>'
+    +'<div class="p-stat"><div style="'+pf('font-size:15px;font-weight:900;color:var(--e)')+'">'+active.length+'</div><div style="font-size:8px;color:var(--tl)">У черзі</div></div>'
+    +'<div class="p-stat"><div style="'+pf('font-size:15px;font-weight:900;color:var(--e)')+'">'+tipCount+'</div><div style="font-size:8px;color:var(--tl)">Чайових</div></div>'
+    +'<div class="p-stat"><div style="'+pf('font-size:15px;font-weight:900;color:var(--e)')+'">'+missed+'</div><div style="font-size:8px;color:var(--tl)">Пропущено</div></div>'
+    +'</div></div>'
+    +'<div style="font-size:9px;color:var(--tl);line-height:1.4;padding:0 3px">Виконані замовлення більше не займають місце в цій вкладці, але вони рахуються в профілі, місіях і статистиці.</div>';
+  h+='</div></div>';
+  return h;
+}
+
+// ─── SHOP ───
+function renderShop(){
+  var lvl=getLvlN();
+  var cats=[];
+  SI.forEach(function(i){if(cats.indexOf(i.cat)<0)cats.push(i.cat);});
+  var h='<div class="pt">Магазин 🛍️</div><div class="ps">Нові інгредієнти = нові рецепти!</div><div class="shop-layout"><div class="shop-main">';
+  // Show unlock progress
+  var nextUnlock=null;
+  SI.forEach(function(i){if(i.unlockLvl>lvl&&(!nextUnlock||i.unlockLvl<nextUnlock))nextUnlock=i.unlockLvl;});
+  if(nextUnlock){
+    h+='<div class="card" style="border-color:var(--c);background:linear-gradient(135deg,var(--cr),#fff)"><div style="display:flex;align-items:center;gap:7px">'
+      +'<span style="font-size:20px">🔒</span>'
+      +'<div><div style="'+pf('font-size:11px;font-weight:700;color:var(--e)')+'">Нові товари відкриються на Рів.'+nextUnlock+'</div>'
+      +'<div style="font-size:9px;color:var(--tl)">Прокачуйся, щоб отримати більше!</div></div></div></div>';
+  }
+  cats.forEach(function(cat){
+    var catItems=SI.filter(function(i){return i.cat===cat;});
+    h+='<div style="'+pf('font-size:12px;font-weight:700;color:var(--e);margin-bottom:5px')+'">'
+      +(cat==="Основи"?"🍵":cat==="Сиропи"?"🍯":"🌿")+" "+cat+'</div><div class="shop-grid">';
+    catItems.forEach(function(item){
+      var ow=owned.has(item.id);
+      var locked=item.unlockLvl>lvl;
+      h+='<div class="shop-tile'+(ow?" owned":locked?" locked-shop":"")+'">'
+        +(ow?'<div class="owned-lb">✓ Є</div>':locked?'<div class="locked-lb">🔒 Рів.'+item.unlockLvl+'</div>':"")
+        +'<span style="font-size:26px;display:block;margin-bottom:3px">'+item.e+'</span>'
+        +'<div style="font-weight:700;font-size:9px;color:var(--e);margin-bottom:1px">'+item.n+'</div>'
+        +'<div style="font-weight:700;color:var(--c);font-size:8px;margin-bottom:4px">'+item.p+'⭐</div>'
+        +'<button class="btn-buy'+(ow?" owned":locked?" locked":"")+'" onclick="buyItem(\''+item.id+'\')" '
+        +(ow||locked?"disabled":"")
+        +' style="opacity:'+(locked?0.5:ow||money>=item.p?1:.45)+'">'
+        +(ow?"✅":locked?"🔒 Рів."+item.unlockLvl:"🛒 Купити")+'</button></div>';
+    });
+    h+='</div>';
+  });
+  // Show unlockable recipes
+  h+='</div><div class="shop-recipes"><div style="'+pf('font-size:12px;font-weight:700;color:var(--e);margin-bottom:7px;margin-top:4px')+'">📖 Рецепти за рівнем</div>';
+  REC.forEach(function(r){
+    var unlocked=r.unlockLvl<=lvl;
+    h+='<div class="card" style="'+(unlocked?"":"opacity:.5")+';display:flex;align-items:center;gap:9px;margin-bottom:6px">'
+      +'<span style="font-size:26px">'+r.e+'</span>'
+      +'<div style="flex:1"><div style="'+pf('font-size:12px;font-weight:700;color:var(--e)')+'">'+r.n+'</div>'
+      +'<div style="font-size:8px;color:var(--tl)">'+r.b.map(function(id){var i=BI.find(function(x){return x.id===id;});return i?i.e+" "+i.n:id;}).join(", ")+'</div></div>'
+      +'<span style="font-size:9px;font-weight:700;color:'+(unlocked?"#388E3C":"#9E9E9E")+'">'+(unlocked?"✓ Відкрито":"🔒 Рів."+r.unlockLvl)+'</span></div>';
+  });
+  h+='</div></div>';
+  return h;
+}
+function buyItem(id){
+  var item=SI.find(function(i){return i.id===id;});
+  if(!item||owned.has(id))return;
+  if(item.unlockLvl>getLvlN()){toast("🔒 Відкривається на Рівні "+item.unlockLvl);return;}
+  if(money<item.p){toast("❌ Потрібно "+item.p+"⭐");return;}
+  money-=item.p;owned.add(id);syncUI();renderTab("shop");
+  toast("✨ "+item.n+" куплено!");
+  // Spawn special orders using the new ingredient
+  for(var i=0;i<2;i++){var o=mkOrd();o.isSp=true;queue.push(o);hist.push(Object.assign({},o));}
+  startTimers();
+  setTimeout(function(){notif("⭐ Нові особливі замовлення!");},1200);
+}
+
+// ─── LEADERBOARD ───
+function renderLeaderboard(){
+  var local=getLB();
+  var all=LB_S.map(function(x){return{n:x.n,e:x.e,r:x.r,rev:x.rev,sc:calcScore(x.xpEq,x.r,x.rev),local:false};})
+    .concat(local.map(function(x){return{n:x.nick,e:x.ava,r:x.r||0,rev:x.rev||0,sc:calcScore(x.xp||0,x.r||0,x.rev||0),local:true,data:x};}))
+    .sort(function(a,b){return b.sc-a.sc;});
+  var top3=all.slice(0,3);var podOrd=[1,0,2];
+  var pHts={1:62,2:43,3:34};
+  var pBgs={1:"linear-gradient(135deg,#D4A843,#F0C96B)",2:"linear-gradient(135deg,#9E9E9E,#BDBDBD)",3:"linear-gradient(135deg,#C8813A,#E09B56)"};
+  var h='<div class="pt">Рейтинг 🏆</div><div class="ps">Позиція = рівень + відгуки клієнтів</div><div class="podium">';
+  podOrd.forEach(function(idx,pos){
+    var p=pos===0?2:pos===1?1:3;var x=top3[idx]||{n:"—",e:"☕",r:0};
+    h+='<div class="pod-i"><div class="pod-a">'+x.e+'</div>'
+      +'<div style="font-size:8px;font-weight:700;color:var(--e);margin-bottom:1px;line-height:1.3">'+x.n+'</div>'
+      +'<div style="font-size:8px;color:var(--c)">'+(x.r?x.r.toFixed(1)+"★":"—")+'</div>'
+      +'<div class="pod-b" style="height:'+pHts[p]+'px;background:'+pBgs[p]+'">'+p+'</div></div>';
+  });
+  h+='</div>';
+  all.forEach(function(l,i){
+    var me=l.local&&l.data&&l.data.nick===prof.nick;
+    h+='<div class="lb-row'+(me?" lb-me":"")+'" '
+      +(l.local?'onclick="openPM(\''+encodeURIComponent(JSON.stringify(l.data))+'\')"':"")+'>'
+      +'<span style="'+pf('font-weight:900;font-size:12px;color:var(--c);width:15px')+'">'+(i+1)+'</span>'
+      +'<span style="font-size:15px">'+l.e+'</span>'
+      +'<div style="flex:1">'
+      +'<div style="font-weight:600;color:var(--e);font-size:10px">'+l.n+(me?" (Ти)":"")+'</div>'
+      +'<div style="font-size:8px;color:var(--c)">'+starsStr(l.r)+'</div></div>'
+      +'<div style="text-align:right">'
+      +'<div style="font-weight:700;font-size:10px;color:var(--e)">'+(l.r?l.r.toFixed(1)+"/5":"—")+'</div>'
+      +'<div style="font-size:7px;color:var(--tl)">'+l.rev+" відг."+'</div></div></div>';
+  });
+  var myScore=calcScore(xp,cafeRating,reviews.length);
+  h+='<div style="background:linear-gradient(135deg,var(--e),var(--d));color:var(--w);border-radius:12px;padding:12px;text-align:center;margin-top:7px">'
+    +'<div style="font-size:8px;opacity:.72;margin-bottom:1px">☕ '+(prof?prof.nick:"Dream Coffee")+'</div>'
+    +'<div style="font-size:15px;color:var(--t)">'+starsStr(cafeRating)+'</div>'
+    +'<div style="'+pf('font-size:17px;font-weight:900')+'">'+(cafeRating?cafeRating.toFixed(1)+"/5":"Немає відгуків")+'</div>'
+    +'<div style="font-size:8px;opacity:.6;margin-top:2px">'+reviews.length+" відгуків · Рів."+getLvlN()+" · Рейтинг: "+myScore+'</div></div>';
+  return h;
+}
+function openPM(enc){
+  var d=JSON.parse(decodeURIComponent(enc));
+  document.getElementById("pm-ava").textContent=d.ava||"☕";
+  document.getElementById("pm-nick").textContent=d.nick;
+  document.getElementById("pm-stars").textContent=starsStr(d.r||0)+" "+(d.r?d.r.toFixed(1)+"/5":"—");
+  document.getElementById("pm-stats").innerHTML=[{v:d.r?d.r.toFixed(1)+"/5":"—",l:"Рейтинг"},{v:d.rev||0,l:"Відгуків"},{v:d.brews||0,l:"Зварено"}]
+    .map(function(x){
+      return '<div style="background:var(--cr);border-radius:8px;padding:7px 4px;text-align:center">'
+        +'<div style="'+pf('font-size:13px;font-weight:700;color:var(--e)')+'">'+x.v+'</div>'
+        +'<div style="font-size:8px;color:var(--tl)">'+x.l+'</div></div>';
+    }).join("");
+  openOv("pm-ov");
+}
+
+// ─── PROFILE ───
+function renderProfile(){
+  var lvl=getLvl(),next=getNext();
+  var xpPct=next?Math.round((xp-lvl.xp)/(next.xp-lvl.xp)*100):100;
+  var h='<div class="profile-layout"><div class="prof-hero">'
+    +'<div class="prof-name">'+(prof?prof.nick:"Бариста")+'</div>'
+    +'<div class="prof-level">Рівень '+lvl.n+' · '+lvl.name+'</div>'
+    +'<div class="prof-rating">'+starsStr(cafeRating)+'</div>'
+    +'<div class="prof-review-line">'+(cafeRating?cafeRating.toFixed(1)+"/5 · "+reviews.length+" відгуків":"Поки немає відгуків")+'</div>'
+    +(next?'<div class="xpbar"><div class="xpfill" style="width:'+xpPct+'%"></div></div><div class="prof-xp-note">XP '+xp+"/"+next.xp+'</div>':"")
+    +'<button class="prof-edit" onclick="editNick()">✏️ Змінити нік</button></div><div class="profile-content">';
+  h+='<div class="sub-tabs">'
+    +'<button class="sub-tab" style="background:'+(profileSubTab==="stats"?"var(--e)":"var(--cr)")+';color:'+(profileSubTab==="stats"?"#fff":"var(--b)")+'" onclick="profileSubTab=\'stats\';renderTab(\'profile\')">📊 Статистика</button>'
+    +'<button class="sub-tab" style="background:'+(profileSubTab==="reviews"?"var(--e)":"var(--cr)")+';color:'+(profileSubTab==="reviews"?"#fff":"var(--b)")+'" onclick="profileSubTab=\'reviews\';renderTab(\'profile\')">💬 Відгуки'+(reviews.length?" ("+reviews.length+")":"")+'</button>'
+    +'</div>';
+  h+=profileSubTab==="stats"?renderProfStats():renderProfReviews();
+  h+='</div></div>';
+  return h;
+}
+function renderProfStats(){
+  var achDone=MS.filter(function(m){return completedMissions.has(m.id);}).length;
+  var h='<div class="prof-stats">'
+    +[{v:"⭐ "+money,l:"Баланс"},{v:brews,l:"Зварено"},{v:dones,l:"Виконано"},{v:tipCount,l:"Чайових"},{v:specials,l:"Особливих"},{v:achDone+"/"+MS.length,l:"Місій"}]
+    .map(function(x){
+      return '<div class="p-stat"><div style="'+pf('font-size:13px;font-weight:700;color:var(--e)')+'">'+x.v+'</div>'
+        +'<div style="font-size:8px;color:var(--tl)">'+x.l+'</div></div>';
+    }).join("")+'</div>';
+  h+='<div class="prog-sec"><div style="'+pf('font-size:11px;font-weight:700;margin-bottom:8px')+'">📈 Прогрес</div>'
+    +[{l:"Зварено кав",c:brews,g:100},{l:"Зароблено ⭐",c:totalEarned,g:5000},{l:"Місій",c:achDone,g:MS.length},{l:"Особливих",c:specials,g:20}]
+    .map(function(x){
+      return '<div style="margin-bottom:7px"><div style="display:flex;justify-content:space-between;font-size:9px;font-weight:600;color:var(--ti);margin-bottom:2px"><span>'+x.l+'</span><span>'+x.c+"/"+x.g+'</span></div>'
+        +'<div class="prog-i-bar"><div class="prog-i-fill" style="width:'+Math.min(100,Math.round(x.c/x.g*100))+'%"></div></div></div>';
+    }).join("")+'</div>';
+  h+='<div style="'+pf('font-size:11px;font-weight:700;color:var(--e);margin-bottom:6px')+'">🏅 Місії</div>'
+    +'<div class="ach-grid">'+MS.map(function(m){
+      var done=completedMissions.has(m.id);
+      return '<div class="ach-c'+(done?" done":" locked")+'">'
+        +'<span style="font-size:20px;display:block;margin-bottom:3px">'+m.e+'</span>'
+        +'<div style="'+pf('font-size:9px;font-weight:700;color:var(--e);margin-bottom:1px')+'">'+m.n+'</div>'
+        +'<div style="font-size:7px;color:var(--tl);line-height:1.3">'+m.desc+'</div></div>';
+    }).join("")+'</div>';
+  return h;
+}
+function renderProfReviews(){
+  if(!reviews.length){
+    return '<div style="text-align:center;padding:32px 18px;color:var(--tl)">'
+      +'<div style="font-size:38px;opacity:.35;margin-bottom:8px">💬</div>'
+      +'<div style="'+pf('font-size:12px;font-weight:700;color:var(--e);margin-bottom:3px')+'">Поки немає відгуків</div>'
+      +'<div style="font-size:10px">Виконуй замовлення швидко — клієнти залишатимуть відгуки!</div>'
+      +'<div style="font-size:9px;color:var(--c);margin-top:6px">На '+getLvlN()+' рівні максимальна оцінка: '+maxReviewStars()+'★</div></div>';
+  }
+  var cnt=[5,4,3,2,1].map(function(s){return{s:s,c:reviews.filter(function(r){return r.stars===s;}).length};});
+  var h='<div class="card" style="margin-bottom:8px">'
+    +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">'
+    +'<div style="text-align:center">'
+    +'<div style="'+pf('font-size:32px;font-weight:900;color:var(--e)')+'">'+cafeRating.toFixed(1)+'</div>'
+    +'<div style="font-size:12px;color:var(--c)">'+starsStr(cafeRating)+'</div>'
+    +'<div style="font-size:8px;color:var(--tl)">'+reviews.length+" відгуків"+'</div></div>'
+    +'<div style="flex:1">'+cnt.map(function(x){
+      var pct=Math.round(x.c/reviews.length*100);
+      return '<div style="display:flex;align-items:center;gap:3px;margin-bottom:2px">'
+        +'<span style="font-size:8px;color:var(--tl);width:7px">'+x.s+'</span>'
+        +'<span style="font-size:8px;color:var(--c)">★</span>'
+        +'<div style="flex:1;background:var(--cr);border-radius:10px;height:4px;overflow:hidden">'
+        +'<div style="height:4px;border-radius:10px;background:var(--c);width:'+pct+'%"></div></div>'
+        +'<span style="font-size:8px;color:var(--tl);width:13px">'+x.c+'</span></div>';
+    }).join("")+'</div></div>'
+    +'<div style="font-size:8px;color:var(--c);text-align:center">Твій рівень '+getLvlN()+': максимум '+maxReviewStars()+'★. Рости щоб отримувати 5★!</div>'
+    +'</div>';
+  reviews.slice(0,15).forEach(function(r){
+    h+='<div class="card">'
+      +'<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">'
+      +'<span style="font-size:16px">'+r.client.a+'</span>'
+      +'<div style="flex:1"><div style="font-weight:700;font-size:10px;color:var(--e)">'+r.client.n+'</div>'
+      +'<div style="font-size:9px;color:var(--c)">'+starsStr(r.stars)+'</div></div>'
+      +'<div style="text-align:right"><div style="font-size:7px;color:var(--tl)">'+r.drink+'</div>'
+      +'<div style="font-size:7px;color:var(--tl)">'+r.time+'</div></div></div>'
+      +'<div style="font-size:10px;color:var(--ti);line-height:1.4;font-style:italic">"'+r.text+'"</div></div>';
+  });
+  return h;
+}
+function editNick(){
+  var n=prompt("Новий нікнейм:",prof?prof.nick:"");
+  if(n&&n.trim()){prof.nick=n.trim();saveSt();renderTab("profile");toast("✅ Нікнейм змінено!");}
+}
+
+// ═══ TIMERS ═══
+function startTimers(){
+  queue.forEach(function(o){
+    if(timers[o.id]||o.status==="done"||o.status==="missed")return;
+    timers[o.id]=setInterval(function(){
+      var idx=queue.findIndex(function(x){return x.id===o.id;});
+      if(idx<0){clearInterval(timers[o.id]);delete timers[o.id];return;}
+      queue[idx].elapsed++;
+      var rem=queue[idx].wait-queue[idx].elapsed;
+      ["arc-","oa-"].forEach(function(pfx){
+        var el=document.getElementById(pfx+o.id);
+        if(el){var f=Math.max(0,rem)/queue[idx].wait;
+          el.setAttribute("stroke-dashoffset",(CIRC*(1-f)).toFixed(1));
+          el.setAttribute("stroke",f>.5?"#388E3C":f>.22?"#E65100":"#C62828");}
+      });
+      ["lb-","ol-"].forEach(function(pfx){
+        var el=document.getElementById(pfx+o.id);if(el)el.textContent=fmtT(rem>0?rem:0);
+      });
+      if(curOrd&&curOrd.id===o.id){
+        var ba=document.getElementById("brew-arc"),bl=document.getElementById("brew-tlb");
+        if(ba&&bl){var f2=Math.max(0,rem)/queue[idx].wait;
+          ba.setAttribute("stroke-dashoffset",(CIRC*(1-f2)).toFixed(1));
+          ba.setAttribute("stroke",f2>.5?"#388E3C":f2>.22?"#E65100":"#C62828");
+          bl.textContent=fmtT(rem>0?rem:0);}
+      }
+      if(rem<=0){
+        clearInterval(timers[o.id]);delete timers[o.id];
+        queue[idx].status="missed";
+        var hh=hist.find(function(x){return x.id===o.id;});if(hh)hh.status="missed";
+        queue=queue.filter(function(x){return x.id!==o.id;});
+        renderQueue();if(curTab==="orders")renderTab("orders");
+        toast("😞 "+o.cl.a+" "+o.cl.n+" пішов!");
+      }
+    },1000);
+  });
+}
+
+// ═══ QUEUE RENDER ═══
+function renderQueue(){
+  var el=document.getElementById("qlist");if(!el)return;
+  var vis=queue.filter(function(o){return o.status!=="done"&&o.status!=="missed";});
+  if(!vis.length){
+    el.innerHTML='<div style="text-align:center;padding:32px 16px;color:var(--tl)">'
+      +'<div style="font-size:38px;opacity:.35;margin-bottom:8px">☕</div>'
+      +'<div style="font-size:11px">Замовлень немає.<br>Скоро прийдуть клієнти!</div></div>';
+    return;
+  }
+  el.innerHTML=vis.map(function(o){
+    var rem=Math.max(0,o.wait-o.elapsed),frac=rem/o.wait;
+    var col=frac>.5?"#388E3C":frac>.22?"#E65100":"#C62828";
+    var off=(CIRC*(1-frac)).toFixed(1);var br=o.status==="brewing";
+    return '<div class="qcard'+(o.isSp?" sp":o.isU?" ug":"")+'">'
+      +(o.isSp?'<div style="background:#9C27B0;color:#fff;border-radius:20px;padding:2px 6px;font-size:8px;font-weight:700;display:inline-block;margin-bottom:3px">⭐ Особливе</div>'
+              :o.isU?'<div style="background:#C62828;color:#fff;border-radius:20px;padding:2px 6px;font-size:8px;font-weight:700;display:inline-block;margin-bottom:3px">🔥 Термінове</div>':"")
+      +'<div style="display:flex;justify-content:space-between;margin-bottom:7px">'
+      +'<div><div style="font-size:10px;font-weight:700;color:var(--e)">'+o.cl.a+" "+o.cl.n+(o.cups>1?" · "+o.cups+"чаш":"")+'</div>'
+      +'<div style="font-size:8px;color:var(--tl)">#'+o.id.slice(-4)+'</div></div>'
+      +'<span style="font-size:9px;font-weight:700;color:var(--tl)">'+o.base+'⭐</span></div>'
+      +'<div style="display:flex;align-items:center;gap:9px;margin-bottom:9px">'
+      +'<span style="font-size:36px">'+o.rec.e+'</span>'
+      +'<div style="flex:1"><div style="'+pf('font-size:13px;font-weight:700;color:var(--e)')+'">'+o.rec.n+'</div></div></div>'
+      +'<div style="display:flex;align-items:center;justify-content:space-between">'
+      +'<div class="ctimer">'
+      +'<svg width="36" height="36" viewBox="0 0 46 46" style="transform:rotate(-90deg)">'
+      +'<circle cx="23" cy="23" r="19" fill="none" stroke="var(--bd)" stroke-width="3.5"/>'
+      +'<circle id="arc-'+o.id+'" cx="23" cy="23" r="19" fill="none" stroke="'+col+'" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="'+CIRC.toFixed(1)+'" stroke-dashoffset="'+off+'"/>'
+      +'</svg><div class="ct-lb" id="lb-'+o.id+'">'+fmtT(rem)+'</div></div>'
+      +'<button class="btn-s" onclick="goBrew(\''+o.id+'\')" '+(br?"disabled":"")+'>'+( br?"⏳ Готується":"☕ Зробити")+'</button>'
+      +'</div></div>';
+  }).join("");
+}
+
+// ═══ BREW ═══
+function setupBrew(){
+  if(!curOrd)return;
+  document.getElementById("ob-ico").textContent=curOrd.rec.e;
+  document.getElementById("ob-name").textContent=curOrd.rec.n+(curOrd.isSp?" ⭐":curOrd.isU?" 🔥":"")+(curOrd.cups>1?" ×"+curOrd.cups:"");
+  document.getElementById("ob-cl").textContent=curOrd.cl.a+" "+curOrd.cl.n+" чекає!";
+  var rem=Math.max(0,curOrd.wait-curOrd.elapsed),frac=rem/curOrd.wait;
+  var ba=document.getElementById("brew-arc"),bl=document.getElementById("brew-tlb");
+  if(ba){ba.setAttribute("stroke-dashoffset",(CIRC*(1-frac)).toFixed(1));ba.setAttribute("stroke",frac>.5?"#388E3C":frac>.22?"#E65100":"#C62828");}
+  if(bl)bl.textContent=fmtT(rem);
+  setPhase(1);
+  document.getElementById("btnMix").disabled=true;
+  document.getElementById("btnServe").disabled=true;
+  renderIng();updateCup();updateReq();
+}
+function setPhase(n){
+  phase=n;[1,2,3].forEach(function(i){document.getElementById("ph"+i).classList.toggle("active",i===n);});
+}
+function renderIng(){
+  var el=document.getElementById("igrid");if(!el)return;
+  el.innerHTML=allIng().map(function(ing){
+    return '<div class="ic'+(mix[ing.id]?" sel":"")+(isMixed?" lk":"")+'" data-id="'+ing.id+'">'
+      +'<span style="font-size:20px;display:block;margin-bottom:2px">'+ing.e+'</span>'
+      +'<span style="font-size:8px;font-weight:700;color:var(--e)">'+ing.n+'</span>'
+      +(mix[ing.id]?'<div class="ic-badge">'+mix[ing.id]+'</div>':"")
+      +'</div>';
+  }).join("");
+  if(!isMixed){
+    el.querySelectorAll(".ic").forEach(function(c){
+      c.addEventListener("click",function(){
+        mix[c.dataset.id]=(mix[c.dataset.id]||0)+1;renderIng();updateCup();updateReq();
+      });
+    });
+  }
+}
+function updateReq(){
+  if(!curOrd)return;
+  var needed={};curOrd.rec.b.forEach(function(id){needed[id]=(needed[id]||0)+1;});
+  var el=document.getElementById("reqrow");if(!el)return;
+  var lvN=getLvlN();
+  var hasExtra=Object.entries(mix).some(function(x){return x[1]>0&&(needed[x[0]]===undefined||x[1]>needed[x[0]]);});
+  if(lvN<=1){
+    var html=Object.entries(needed).map(function(x){
+      var ing=allIng().find(function(a){return a.id===x[0];});
+      var cur=mix[x[0]]||0;var col=cur===x[1]?"#4CAF50":cur>x[1]?"#C62828":"#E65100";
+      return '<span class="ri"><span class="rd" style="background:'+col+'"></span>'+(ing?ing.e+" "+ing.n:x[0])+" "+cur+"/"+x[1]+'</span>';
+    }).join("");
+    if(hasExtra)html+='<span class="ri" style="color:#C62828">⚠️ Зайві!</span>';
+    el.innerHTML=html;
+  } else if(lvN<=3){
+    var ents=Object.entries(needed),f=ents[0],rest=ents.slice(1);
+    var fi=allIng().find(function(x){return x.id===f[0];});var c0=mix[f[0]]||0;
+    var col0=c0===f[1]?"#4CAF50":c0>f[1]?"#C62828":"#E65100";
+    var html2='<span class="ri"><span class="rd" style="background:'+col0+'"></span>'+(fi?fi.e+" "+fi.n:f[0])+" "+c0+"/"+f[1]+'</span>';
+    if(rest.length){
+      var rok=rest.every(function(x){return (mix[x[0]]||0)===x[1];});
+      var rover=rest.some(function(x){return (mix[x[0]]||0)>x[1];});
+      html2+='<span class="ri"><span class="rd" style="background:'+(rok?"#4CAF50":rover?"#C62828":"#E65100")+'"></span>+ '+rest.reduce(function(s,x){return s+x[1];},0)+' інгр.</span>';
+    }
+    if(hasExtra)html2+='<span class="ri" style="color:#C62828">⚠️ Зайві!</span>';
+    el.innerHTML=html2;
+  } else {
+    var allOk2=Object.entries(needed).every(function(x){return (mix[x[0]]||0)===x[1];})&&!hasExtra;
+    el.innerHTML='<span class="ri"><span class="rd" style="background:'+(allOk2?"#4CAF50":hasExtra?"#C62828":"#E65100")+'"></span>'
+      +(allOk2?"✓ Готово! Змішуй":hasExtra?"⚠️ Зайві інгредієнти!":"🔒 Рецепт прихований")+'</span>';
+  }
+  var hasAll=Object.entries(needed).every(function(x){return (mix[x[0]]||0)===x[1];});
+  var noExtra=Object.entries(mix).every(function(x){return x[1]===0||(needed[x[0]]!==undefined&&x[1]<=needed[x[0]]);});
+  document.getElementById("btnMix").disabled=!(hasAll&&noExtra);
+}
+function updateCup(){
+  var entries=Object.entries(mix).filter(function(x){return x[1]>0;});
+  var total=entries.reduce(function(s,x){return s+x[1];},0);
+  var liq=document.getElementById("liq"),foam=document.getElementById("foam-el"),stm=document.getElementById("stm-g");
+  var lbl=document.getElementById("mix-lbl"),stats=document.getElementById("cstats");if(!liq)return;
+  if(!total){
+    liq.setAttribute("fill","transparent");liq.setAttribute("y","135");liq.setAttribute("height","0");
+    if(foam)foam.style.opacity="0";if(stm)stm.style.opacity="0";
+    if(lbl){lbl.textContent="Чашка порожня";lbl.style.color="var(--tl)";}
+    if(stats)stats.innerHTML='<div style="background:var(--cr);border-radius:6px;padding:3px 5px;display:flex;justify-content:space-between;grid-column:1/-1"><span style="font-size:8px;color:var(--tl)">Інгредієнти</span><span style="font-size:9px;font-weight:700">—</span></div>';
+    return;
+  }
+  var r=245,g=240,b=220,tw=0;
+  entries.forEach(function(x){
+    var ing=allIng().find(function(a){return a.id===x[0];});if(!ing)return;
+    r=(r*tw+ing.c[0]*x[1])/(tw+x[1]);g=(g*tw+ing.c[1]*x[1])/(tw+x[1]);b=(b*tw+ing.c[2]*x[1])/(tw+x[1]);tw+=x[1];
+  });
+  var fill="rgb("+Math.round(r)+","+Math.round(g)+","+Math.round(b)+")";
+  var liqH=Math.min(88,total*12),y=135-liqH;
+  liq.setAttribute("fill",fill);liq.setAttribute("y",String(y));liq.setAttribute("height",String(liqH+2));
+  if(foam){var hf=entries.some(function(x){var i=allIng().find(function(a){return a.id===x[0];});return i&&i.foam;});foam.style.opacity=hf?"0.8":"0";foam.setAttribute("cy",String(y+4));}
+  if(stm){var hh=entries.some(function(x){var i=allIng().find(function(a){return a.id===x[0];});return i&&i.hot;});stm.style.opacity=hh?"0.7":"0";}
+  if(lbl){if(isMixed){lbl.textContent="✨ "+(curOrd?curOrd.rec.n:"кава")+" готова!";lbl.style.color="var(--e)";}else{lbl.textContent=entries.map(function(x){var i=allIng().find(function(a){return a.id===x[0];});return i?i.e:"";}).join(" ");lbl.style.color="var(--ti)";}}
+  if(stats)stats.innerHTML=entries.map(function(x){var i=allIng().find(function(a){return a.id===x[0];});return '<div style="background:var(--cr);border-radius:6px;padding:3px 5px;display:flex;justify-content:space-between"><span style="font-size:8px;color:var(--tl)">'+(i?i.e+" "+i.n:x[0])+'</span><span style="font-size:9px;font-weight:700">×'+x[1]+'</span></div>';}).join("");
+}
+function clearBrew(){if(isMixed)return;mix={};renderIng();updateCup();updateReq();document.getElementById("btnMix").disabled=true;setPhase(1);}
+function doMix(){
+  if(isMixed)return;
+  var needed={};curOrd.rec.b.forEach(function(id){needed[id]=(needed[id]||0)+1;});
+  var miss=Object.entries(needed).filter(function(x){return (mix[x[0]]||0)<x[1];});
+  if(miss.length){var nm=miss.map(function(x){var i=allIng().find(function(a){return a.id===x[0];});return i?i.e+" "+i.n:x[0];});toast("⚠️ Не вистачає: "+nm.join(", "));return;}
+  var extra=Object.entries(mix).filter(function(x){return x[1]>0&&(needed[x[0]]===undefined||x[1]>needed[x[0]]);});
+  if(extra.length){var ne=extra.map(function(x){var i=allIng().find(function(a){return a.id===x[0];});return i?i.e+" "+i.n:x[0];});toast("❌ Зайві: "+ne.join(", "));return;}
+  isMixed=true;setPhase(2);renderIng();updateCup();
+  document.getElementById("btnMix").disabled=true;document.getElementById("btnServe").disabled=false;
+  toast("⚗️ Змішано! Подавай!");
+}
+function serve(){
+  if(!isMixed||!curOrd)return;
+  var o=curOrd;clearInterval(timers[o.id]);delete timers[o.id];
+  queue=queue.filter(function(x){return x.id!==o.id;});o.status="done";
+  var rem=Math.max(0,o.wait-o.elapsed),frac=rem/o.wait;
+  var baseTipChance=frac>.65?0.28:frac>.4?0.12:0;
+  var tipChance=baseTipChance+(o.tipBonus||0);
+  var tip=Math.random()<tipChance?(frac>.65?Math.round(o.base*.14):Math.round(o.base*.07)):0;
+  var mult=getComboMult();
+  if(randomEvent==="vip"){mult*=2;randomEvent=null;}
+  if(randomEvent==="festival")mult*=1.3;
+  var earned=Math.round((o.base+tip)*mult);
+  money+=earned;brews++;dones++;if(tip>0)tipCount++;if(o.isSp)specials++;totalEarned+=earned;
+  o.earned=earned;o.tip=tip;
+  var hi=hist.find(function(x){return x.id===o.id;});if(hi){hi.status="done";hi.earned=earned;hi.tip=tip;}
+  addCombo();var xpG=o.isSp?15:o.isU?9:5;addXP(xpG);
+  // Review — stars capped by player level
+  var rChance=frac>.6?0.65:frac>.35?0.40:0.15;
+  if(Math.random()<rChance){
+    var rev=genReview(o.cl,frac,o.rec.n);
+    reviews.unshift(rev);if(reviews.length>30)reviews=reviews.slice(0,30);
+    cafeRating=+(reviews.reduce(function(s,r){return s+r.stars;},0)/reviews.length).toFixed(1);
+  }
+  syncUI();checkMissions();
+  document.getElementById("r-ico").textContent=o.rec.e;
+  document.getElementById("r-ti").textContent=tip>0?(o.isSp?"Особливий успіх! 🌟":"Відмінно! 🎉"):"Виконано!";
+  document.getElementById("r-su").textContent=o.cl.a+" "+o.cl.n+(tip>0?" лишив чайових!":" задоволений!");
+  var ea='<div style="'+pf('font-size:17px;font-weight:900;color:var(--e);line-height:1.6')+'">+ '+earned+"⭐"+(mult>1?" (×"+mult.toFixed(1)+")":"")+'</div>';
+  if(tip>0)ea+='<div style="'+pf('font-size:13px;font-weight:900;color:var(--c);line-height:1.5')+'">+ '+tip+"⭐ чайових 💛</div>";
+  ea+='<div style="font-size:9px;color:var(--tl);margin-top:2px">+'+xpG+"XP"+(combo>=2?" · 🔥 Комбо ×"+combo:"")+'</div>';
+  document.getElementById("r-ea").innerHTML=ea;
+  setPhase(3);openOv("res-ov");curOrd=null;mix={};isMixed=false;
+}
+function closeResult(){
+  closeOv("res-ov");
+  var o=mkOrd();queue.push(o);hist.push(Object.assign({},o));startTimers();
+  setTab("orders");
+}
+
+// ═══ BOOT ═══
+initAva();
+if(loadSt()){startGame();}
+else{showScr("s-ob");}
+</script>
+</body>
+</html>
+
+
+
+
 
