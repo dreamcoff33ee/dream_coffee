@@ -333,10 +333,8 @@ body{display:flex;align-items:center;justify-content:center;}
   <div class="ob-card">
     <div style="font-size:46px;margin-bottom:6px;animation:fc 3s ease-in-out infinite">☕</div>
     <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:var(--e);margin-bottom:2px">Dream Coffee</div>
-    <div style="font-size:10px;color:var(--tl);margin-bottom:14px">Стань найкращим барістою!</div>
+    <div style="font-size:10px;color:var(--tl);margin-bottom:14px">Стань найкращим баристою!</div>
     <input class="ob-inp" id="ob-nick" placeholder="Твій нікнейм..." maxlength="20">
-    <div style="font-size:9px;font-weight:700;color:var(--e);text-align:left;margin-bottom:5px">Обери аватар:</div>
-    <div class="ava-grid" id="ava-grid"></div>
     <button class="btn-p" onclick="finishOB()">Почати гру ☕</button>
   </div>
 </div>
@@ -368,7 +366,7 @@ body{display:flex;align-items:center;justify-content:center;}
   <div class="sb">
     <div class="pt">Приготування ☕</div>
     <div class="brew-banner">
-      <span id="ob-ico" style="font-size:22px">☕</span>
+      <div id="ob-ico" style="width:44px;height:44px;border-radius:10px;overflow:hidden;flex-shrink:0"></div>
       <div style="flex:1">
         <div id="ob-name" style="font-family:'Playfair Display',serif;font-size:11px;font-weight:700;color:var(--e)">—</div>
         <div id="ob-cl" style="font-size:9px;color:var(--tl);margin-top:1px">—</div>
@@ -436,7 +434,7 @@ body{display:flex;align-items:center;justify-content:center;}
 <!-- MODALS -->
 <div class="overlay" id="res-ov">
   <div class="m-card">
-    <div id="r-ico" style="font-size:52px;margin-bottom:7px;animation:fc 3s ease-in-out infinite">☕</div>
+    <div id="r-ico" style="width:80px;height:80px;border-radius:16px;overflow:hidden;margin:0 auto 7px;display:flex;align-items:center;justify-content:center;font-size:52px;animation:fc 3s ease-in-out infinite">☕</div>
     <div id="r-ti" style="font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--e);margin-bottom:2px">Виконано!</div>
     <div id="r-su" style="font-size:9px;color:var(--tl);margin-bottom:8px"></div>
     <div id="r-ea" style="margin-bottom:12px"></div>
@@ -540,33 +538,76 @@ var DRINK_IMGS={
 function recImg(rec,size){var img=DRINK_IMGS[rec.n];if(img){if(rec.n==="\u0410\u043c\u0435\u0440\u0438\u043a\u0430\u043d\u043e"){return'<img src="'+img+'" style="width:'+size+'px;height:'+size+'px;object-fit:contain;border-radius:10px;display:block;padding:1px;">';}return'<img src="'+img+'" style="width:'+size+'px;height:'+size+'px;object-fit:cover;border-radius:10px;display:block;">';}return'<span style="font-size:'+(Math.round(size*.7))+'px;display:block;text-align:center;line-height:'+size+'px">'+rec.e+'</span>';}
 
 var CLIENTS = [
-  {n:"Оля",a:"👩"},{n:"Максим",a:"👨"},{n:"Катя",a:"🧒"},
-  {n:"Дмитро",a:"👴"},{n:"Надя",a:"👧"},{n:"Михайло",a:"🧑"},
-  {n:"Аня",a:"👱‍♀️"},{n:"Сергій",a:"🧔"},{n:"Ліза",a:"👩‍🦰"},
-  {n:"Роман",a:"👨"},{n:"Тетяна",a:"👩"},{n:"Іван",a:"🧑"},
-  {n:"Юля",a:"👧"},{n:"Олексій",a:"👨"},{n:"Марина",a:"👩"},
-  {n:"Павло",a:"🧑"},{n:"Вікторія",a:"👩"},{n:"Андрій",a:"👨"},
-  {n:"Даша",a:"👱‍♀️"},{n:"Артем",a:"🧑"},{n:"Христина",a:"👩"},
-  {n:"Богдан",a:"👨"},{n:"Ірина",a:"👩"},{n:"Тарас",a:"🧔"},
-  {n:"Маша",a:"👧"},{n:"Влад",a:"👦"},{n:"Соня",a:"🧒"},
-  {n:"Гриша",a:"👴"},{n:"Поліна",a:"👩"},{n:"Денис",a:"👨"},
-  {n:"Яна",a:"👩"},{n:"Кирило",a:"🧑"},{n:"Валерія",a:"👩"},
-  {n:"Остап",a:"👨"},{n:"Діана",a:"👧"},{n:"Євген",a:"🧑"},
-  {n:"Рита",a:"👩"},{n:"Нікіта",a:"👦"},{n:"Аліна",a:"👩"},
-  {n:"Степан",a:"👴"},{n:"Лора",a:"👩‍🦰"},{n:"Гліб",a:"👨"},
-  {n:"Мирослава",a:"👩"},{n:"Ростислав",a:"🧔"},{n:"Злата",a:"🧒"}
+  {n:"Оля",a:"👩",g:"f"},{n:"Максим",a:"👨",g:"m"},{n:"Катя",a:"🧒",g:"f"},
+  {n:"Дмитро",a:"👴",g:"m"},{n:"Надя",a:"👧",g:"f"},{n:"Михайло",a:"🧑",g:"m"},
+  {n:"Аня",a:"👱‍♀️",g:"f"},{n:"Сергій",a:"🧔",g:"m"},{n:"Ліза",a:"👩‍🦰",g:"f"},
+  {n:"Роман",a:"👨",g:"m"},{n:"Тетяна",a:"👩",g:"f"},{n:"Іван",a:"🧑",g:"m"},
+  {n:"Юля",a:"👧",g:"f"},{n:"Олексій",a:"👨",g:"m"},{n:"Марина",a:"👩",g:"f"},
+  {n:"Павло",a:"🧑",g:"m"},{n:"Вікторія",a:"👩",g:"f"},{n:"Андрій",a:"👨",g:"m"},
+  {n:"Даша",a:"👱‍♀️",g:"f"},{n:"Артем",a:"🧑",g:"m"},{n:"Христина",a:"👩",g:"f"},
+  {n:"Богдан",a:"👨",g:"m"},{n:"Ірина",a:"👩",g:"f"},{n:"Тарас",a:"🧔",g:"m"},
+  {n:"Маша",a:"👧",g:"f"},{n:"Влад",a:"👦",g:"m"},{n:"Соня",a:"🧒",g:"f"},
+  {n:"Гриша",a:"👴",g:"m"},{n:"Поліна",a:"👩",g:"f"},{n:"Денис",a:"👨",g:"m"},
+  {n:"Яна",a:"👩",g:"f"},{n:"Кирило",a:"🧑",g:"m"},{n:"Валерія",a:"👩",g:"f"},
+  {n:"Остап",a:"👨",g:"m"},{n:"Діана",a:"👧",g:"f"},{n:"Євген",a:"🧑",g:"m"},
+  {n:"Рита",a:"👩",g:"f"},{n:"Нікіта",a:"👦",g:"m"},{n:"Аліна",a:"👩",g:"f"},
+  {n:"Степан",a:"👴",g:"m"},{n:"Лора",a:"👩‍🦰",g:"f"},{n:"Гліб",a:"👨",g:"m"},
+  {n:"Мирослава",a:"👩",g:"f"},{n:"Ростислав",a:"🧔",g:"m"},{n:"Злата",a:"🧒",g:"f"}
 ];
 var AVATS = ["☕","🧑‍🍳","👩‍🍳","⭐","🔥","💎","🍵","🌟","🧑‍🎨","🫖"];
 
 // Levels — each level unlocks new recipes/shop items, changes difficulty
 var LVS = [
-  {n:1,name:"Новачок",xp:0,   max:6,wm:1.0, sc:0,  uc:0,  mc:0,  desc:"Доступні: Еспресо, Американо, Лате"},
-  {n:2,name:"Учень",  xp:200, max:6,wm:.95, sc:0,  uc:.1, mc:.1, desc:"Нові рецепти: Капучіно, Крем-кава + нові сиропи 🔥"},
-  {n:3,name:"Бариста",xp:600, max:6,wm:.85, sc:.15,uc:.15,mc:.2, desc:"Нові рецепти: айс-кава, какао та мокко"},
-  {n:4,name:"Майстер",xp:1400,max:6,wm:.75, sc:.25,uc:.2, mc:.3, desc:"Матча, матча-лате та складні рецепти 🔒"},
-  {n:5,name:"Експерт",xp:2800,max:6,wm:.65, sc:.35,uc:.25,mc:.4, desc:"6 замовлень одночасно + айс-матча та пряний какао"},
-  {n:6,name:"Шеф",    xp:5000,max:6,wm:.55, sc:.4, uc:.3, mc:.5, desc:"Час мінімальний. Тільки профі!"},
-  {n:7,name:"Легенда",xp:9000,max:7,wm:.45, sc:.5, uc:.35,mc:.6, desc:"Максимальна складність 🏆"}
+  {n:1,name:"Новачок",xp:0,max:3,wm:1,sc:0,uc:0,mc:0,desc:"Доступні: Еспресо, Американо, Лате"},
+  {n:2,name:"Стажер",xp:100,max:3,wm:0.99,sc:0.01,uc:0,mc:0,desc:"Робиш перші кроки — тренуйся!"},
+  {n:3,name:"Учень",xp:320,max:3,wm:0.97,sc:0.03,uc:0.01,mc:0,desc:"Вчишся готувати правильно"},
+  {n:4,name:"Помічник",xp:660,max:3,wm:0.96,sc:0.04,uc:0.02,mc:0.02,desc:"Помагаєш досвідченим баристам"},
+  {n:5,name:"Підмайстер",xp:1120,max:3,wm:0.95,sc:0.05,uc:0.03,mc:0.03,desc:"Майже самостійний. Ще небагато!"},
+  {n:6,name:"Бариста",xp:1700,max:3,wm:0.94,sc:0.07,uc:0.04,mc:0.05,desc:"Офіційно — бариста! Нові рецепти 🔥"},
+  {n:7,name:"Молодший бариста",xp:2400,max:4,wm:0.92,sc:0.08,uc:0.04,mc:0.07,desc:"Клієнти довіряють тобі замовлення"},
+  {n:8,name:"Кавовар",xp:3220,max:4,wm:0.91,sc:0.09,uc:0.05,mc:0.09,desc:"Вмієш готувати більшість напоїв"},
+  {n:9,name:"Умілець",xp:4160,max:4,wm:0.9,sc:0.1,uc:0.06,mc:0.1,desc:"Навчаєш інших простим трюкам"},
+  {n:10,name:"Спеціаліст",xp:5220,max:4,wm:0.88,sc:0.12,uc:0.07,mc:0.12,desc:"Знаєш усі базові техніки"},
+  {n:11,name:"Досвідчений",xp:6400,max:4,wm:0.87,sc:0.13,uc:0.08,mc:0.14,desc:"Досвід помітний у кожній чашці"},
+  {n:12,name:"Знавець",xp:7700,max:4,wm:0.86,sc:0.14,uc:0.09,mc:0.15,desc:"Тонко відчуваєш смак кави"},
+  {n:13,name:"Профі",xp:9120,max:5,wm:0.84,sc:0.16,uc:0.1,mc:0.17,desc:"Профі! Складні рецепти підкоряються"},
+  {n:14,name:"Вправний",xp:10660,max:5,wm:0.83,sc:0.17,uc:0.11,mc:0.19,desc:"Рухи відточені до досконалості"},
+  {n:15,name:"Майстер",xp:12320,max:5,wm:0.82,sc:0.18,uc:0.12,mc:0.2,desc:"Майстер своєї справи!"},
+  {n:16,name:"Кавовий майстер",xp:14100,max:5,wm:0.81,sc:0.19,uc:0.13,mc:0.22,desc:"Кава — твоє мистецтво"},
+  {n:17,name:"Художник",xp:16000,max:5,wm:0.79,sc:0.21,uc:0.13,mc:0.24,desc:"Малюєш смаки як художник"},
+  {n:18,name:"Артист",xp:18020,max:5,wm:0.78,sc:0.22,uc:0.14,mc:0.26,desc:"Кожен напій — маленький шедевр"},
+  {n:19,name:"Творець",xp:20160,max:6,wm:0.77,sc:0.23,uc:0.15,mc:0.27,desc:"Клієнти спеціально приходять до тебе"},
+  {n:20,name:"Шеф-бариста",xp:22420,max:6,wm:0.75,sc:0.25,uc:0.16,mc:0.29,desc:"Шеф-бариста! 🏆"},
+  {n:21,name:"Кавовий гід",xp:24800,max:6,wm:0.74,sc:0.26,uc:0.17,mc:0.31,desc:"Знаєш усі секрети кавового світу"},
+  {n:22,name:"Експерт",xp:27300,max:6,wm:0.73,sc:0.27,uc:0.18,mc:0.32,desc:"Твій досвід не має меж"},
+  {n:23,name:"Наставник",xp:29920,max:6,wm:0.71,sc:0.29,uc:0.19,mc:0.34,desc:"Навчаєш наступне покоління баристів"},
+  {n:24,name:"Ветеран",xp:32660,max:6,wm:0.7,sc:0.3,uc:0.2,mc:0.36,desc:"Ветеран кавової індустрії"},
+  {n:25,name:"Напівлегенда",xp:35520,max:7,wm:0.69,sc:0.31,uc:0.21,mc:0.37,desc:"Майже легенда!"},
+  {n:26,name:"Гуру",xp:38500,max:7,wm:0.68,sc:0.33,uc:0.22,mc:0.39,desc:"Гуру кави. Учні шукають твоєї мудрості"},
+  {n:27,name:"Зірка кави",xp:41600,max:7,wm:0.66,sc:0.34,uc:0.22,mc:0.41,desc:"Твоя кава — твоя зірка"},
+  {n:28,name:"Ас",xp:44820,max:7,wm:0.65,sc:0.35,uc:0.23,mc:0.43,desc:"Кращий ас серед баристів"},
+  {n:29,name:"Чемпіон",xp:48160,max:7,wm:0.64,sc:0.36,uc:0.24,mc:0.44,desc:"Чемпіон кавової майстерності"},
+  {n:30,name:"Грандмайстер",xp:51620,max:7,wm:0.62,sc:0.38,uc:0.25,mc:0.46,desc:"Грандмайстер! 👑"},
+  {n:31,name:"Еліта",xp:55200,max:8,wm:0.61,sc:0.39,uc:0.26,mc:0.48,desc:"Еліта серед еліт"},
+  {n:32,name:"Кавова зірка",xp:58900,max:8,wm:0.6,sc:0.4,uc:0.27,mc:0.49,desc:"Твоя зірка сяє яскраво"},
+  {n:33,name:"Геній",xp:62720,max:8,wm:0.58,sc:0.42,uc:0.28,mc:0.51,desc:"Геніальний бариста!"},
+  {n:34,name:"Ікона",xp:66660,max:8,wm:0.57,sc:0.43,uc:0.29,mc:0.53,desc:"Ікона кавового мистецтва"},
+  {n:35,name:"Легенда",xp:70720,max:8,wm:0.56,sc:0.44,uc:0.3,mc:0.54,desc:"Справжня легенда! 🌟"},
+  {n:36,name:"Кавовий герой",xp:74900,max:8,wm:0.55,sc:0.45,uc:0.31,mc:0.56,desc:"Твоя слава виходить за межі кав'ярні"},
+  {n:37,name:"Суперзірка",xp:79200,max:9,wm:0.53,sc:0.47,uc:0.32,mc:0.58,desc:"Суперзірка кавового світу ⭐⭐⭐"},
+  {n:38,name:"Титан",xp:83620,max:9,wm:0.52,sc:0.48,uc:0.32,mc:0.6,desc:"Титан бариста!"},
+  {n:39,name:"Надзірка",xp:88160,max:9,wm:0.51,sc:0.49,uc:0.33,mc:0.61,desc:"Надзірка! Ніхто не може порівнятись"},
+  {n:40,name:"Мегамайстер",xp:92820,max:9,wm:0.49,sc:0.51,uc:0.34,mc:0.63,desc:"Мегамайстер кави!"},
+  {n:41,name:"Олімпієць",xp:97600,max:9,wm:0.48,sc:0.52,uc:0.35,mc:0.65,desc:"Ти на Олімпі майстерності"},
+  {n:42,name:"Абсолют",xp:102500,max:9,wm:0.47,sc:0.53,uc:0.36,mc:0.66,desc:"Абсолютний майстер кави!"},
+  {n:43,name:"Феномен",xp:107520,max:10,wm:0.45,sc:0.55,uc:0.37,mc:0.68,desc:"Феноменальний бариста!"},
+  {n:44,name:"Надлегенда",xp:112660,max:10,wm:0.44,sc:0.56,uc:0.38,mc:0.7,desc:"Надлегенда! Немає меж ⚡"},
+  {n:45,name:"Напівбог",xp:117920,max:10,wm:0.43,sc:0.57,uc:0.39,mc:0.71,desc:"Напівбог серед баристів"},
+  {n:46,name:"Кавовий титан",xp:123300,max:10,wm:0.42,sc:0.58,uc:0.4,mc:0.73,desc:"Кавовий титан непереможний!"},
+  {n:47,name:"Безсмертний",xp:128800,max:10,wm:0.4,sc:0.6,uc:0.4,mc:0.75,desc:"Безсмертна легенда кави"},
+  {n:48,name:"Чемпіон богів",xp:134420,max:10,wm:0.39,sc:0.61,uc:0.41,mc:0.77,desc:"Чемпіон серед богів кави"},
+  {n:49,name:"Абсолютний",xp:140160,max:10,wm:0.38,sc:0.62,uc:0.42,mc:0.78,desc:"Абсолютна досконалість у чашці"},
+  {n:50,name:"Кавовий Бог",xp:146020,max:10,wm:0.36,sc:0.64,uc:0.43,mc:0.8,desc:"☕ КАВОВИЙ БОГ! Вершина! 🏆👑"}
 ];
 
 var MS = [
@@ -584,11 +625,11 @@ var MS = [
 
 // Static LB — xpEq for score calculation
 var LB_S = [
-  {n:"Aroma Cafe",    e:"☕",r:4.8,rev:312,xpEq:8500},
-  {n:"Black Cup",     e:"🖤",r:4.5,rev:198,xpEq:5200},
-  {n:"Milk and More", e:"🥛",r:4.2,rev:145,xpEq:3000},
-  {n:"Brew Station",  e:"⚗️",r:3.9,rev:87, xpEq:1600},
-  {n:"The Roastery",  e:"🫘",r:3.7,rev:64, xpEq:900}
+  {n:"Aroma Cafe",    e:"☕",lvl:38,xpEq:53000},
+  {n:"Black Cup",     e:"🖤",lvl:29,xpEq:29000},
+  {n:"Milk and More", e:"🥛",lvl:21,xpEq:13000},
+  {n:"Brew Station",  e:"⚗️",lvl:14,xpEq:5200},
+  {n:"The Roastery",  e:"🫘",lvl:7, xpEq:1500}
 ];
 
 // Review texts — max stars depend on player level (new players can't get 5 stars easily)
@@ -709,7 +750,7 @@ function blend(mx){
 // Review effect: rating affects client flow, tips, patience
 function getRevBonus(){
   if(!reviews.length)return{tipBonus:0,waitBonus:1.0,clientMult:1.0};
-  var r=cafeRating;
+  var r=+(reviews.reduce(function(s,rv){return s+rv.stars;},0)/reviews.length).toFixed(1);
   return{
     tipBonus:   r>=4.5?0.15:r>=4.0?0.08:r>=3.5?0.03:0,
     waitBonus:  r>=4.0?1.12:r>=3.0?1.0:0.88,
@@ -720,8 +761,8 @@ function getRevBonus(){
 // Max stars a player can receive based on level — new players can't get 5 stars
 function maxReviewStars(){
   var lvl=getLvlN();
-  if(lvl<=2)return 3;
-  if(lvl<=3)return 4;
+  if(lvl<=5)return 3;
+  if(lvl<=10)return 4;
   return 5;
 }
 
@@ -775,7 +816,7 @@ function saveSt(){
   try{
     var lb=JSON.parse(localStorage.getItem("dc3_lb")||"[]");
     var i=lb.findIndex(function(x){return x.nick===prof.nick;});
-    var entry={nick:prof.nick,ava:prof.ava,r:cafeRating,rev:reviews.length,brews:brews,xp:xp};
+    var entry={nick:prof.nick,ava:prof.ava,brews:brews,xp:xp};
     if(i>=0)lb[i]=entry;else lb.push(entry);
     localStorage.setItem("dc3_lb",JSON.stringify(lb));
   }catch(e){}
@@ -788,7 +829,7 @@ function loadSt(){
       money=d.money||0;brews=d.brews||0;dones=d.dones||0;tipCount=d.tipCount||0;
       specials=d.specials||0;xp=d.xp||0;totalEarned=d.totalEarned||0;
       streak=d.streak||0;lastDate=d.lastDate||"";
-      reviews=d.reviews||[];cafeRating=d.cafeRating||0;
+      reviews=d.reviews||[];cafeRating=+Math.min(5,(1+(Math.max(1,(d.xp===undefined?1:LVS.filter(function(l){return (d.xp||0)>=l.xp;}).length||1))-1)*4/49)).toFixed(1);
       owned=new Set(d.owned||BI.map(function(i){return i.id;}));
       completedMissions=new Set(d.cm||[]);
       return true;
@@ -861,11 +902,20 @@ function checkMissions(){
 }
 
 // ═══ REVIEWS ═══
-function genReview(cl,frac,drinkName){
+function genReview(cl,frac,drinkName,wrongCup){
   var ms=maxReviewStars();
-  // Stars based on speed AND capped by player level
-  var speedStars=frac>.65?5:frac>.45?4:frac>.25?3:2;
-  var stars=Math.min(ms,speedStars);
+  var stars;
+  if(wrongCup){
+    // Неправильна чашка — клієнт завжди незадоволений
+    stars=1;
+  } else {
+    // Базові зірки від швидкості виконання
+    var baseStars=frac>.75?ms:frac>.50?Math.max(ms-1,2):frac>.25?Math.max(ms-2,2):Math.max(ms-2,1);
+    // Невеличкий випадковий розкид: клієнти іноді дають на 1★ менше
+    var roll=Math.random();
+    stars=roll<0.15?Math.max(1,baseStars-1):baseStars;
+    stars=Math.min(ms,stars);
+  }
   var txts=REV_TXT[stars]||REV_TXT[3];
   var text=txts[Math.floor(Math.random()*txts.length)];
   return{client:cl,stars:stars,text:text,drink:drinkName,time:new Date().toLocaleTimeString("uk-UA",{hour:"2-digit",minute:"2-digit"})};
@@ -885,7 +935,7 @@ function pickAva(el,a){
 function finishOB(){
   var n=document.getElementById("ob-nick").value.trim();
   if(!n){toast("Введи нікнейм!");return;}
-  prof={nick:n,ava:selAva};
+  prof={nick:n,ava:"☕"};
   money=0;brews=0;dones=0;tipCount=0;specials=0;xp=0;totalEarned=0;
   streak=1;lastDate=new Date().toDateString();reviews=[];cafeRating=0;combo=0;
   owned=new Set(BI.map(function(i){return i.id;}));
@@ -900,7 +950,7 @@ function startGame(){
   if(lastDate!==today){
     var ns=lastDate===yest?streak+1:1;
     streak=ns;lastDate=today;
-    var bonus=ns*20;money+=bonus;totalEarned+=bonus;
+    var bonus=Math.max(50,ns*20);money+=bonus;totalEarned+=bonus;
     setTimeout(function(){notif("🔥 День "+ns+" поспіль! +"+bonus+"⭐");},1500);
   }
   syncUI();queue=[];hist=[];
@@ -977,7 +1027,7 @@ function openCupSel(ord){
   var recCup=(ord.rec&&ord.rec.cup)||"mug";
   selectedCup=recCup;
   var cups=[
-    {t:"small",lbl:"Маленька", sub:"Еспресо"},
+    {t:"small",lbl:"Маленька кружка", sub:"Еспресо"},
     {t:"mug",  lbl:"Кружка",   sub:"Стандартна"},
     {t:"tall", lbl:"Стакан",   sub:"Айс-напої"}
   ];
@@ -1066,7 +1116,7 @@ function confirmCup(){
       +'</div>';
   }
   function getCupSVGFn(t){return null;}
-  function getCupLabel(t){return t==="small"?"☕ Маленька чашечка":t==="tall"?"🧊 Висока склянка":"☕ Стандартна кружка";}
+  function getCupLabel(t){return t==="small"?"☕ Маленька кружка":t==="tall"?"🧊 Висока склянка":"☕ Стандартна кружка";}
 function setTab(t){
   curTab=t;
   document.querySelectorAll(".nb").forEach(function(b){b.classList.remove("on");});
@@ -1118,7 +1168,7 @@ function renderHome(){
     h+='<div class="card" style="border-color:'+(streak>=7?"#D4A843":streak>=3?"#E65100":"var(--bd)")+'"><div style="display:flex;align-items:center;gap:7px">'
       +'<span style="font-size:20px">'+(streak>=7?"🏆":streak>=3?"🔥":"📅")+'</span>'
       +'<div><div style="'+pf('font-size:11px;font-weight:700')+'">'+streak+' день поспіль!</div>'
-      +'<div style="font-size:9px;color:var(--tl)">+'+streak*20+'⭐ при вході. '+(streak>=3?"Не переривай!":"Заходь завтра!")+'</div></div></div></div>';
+      +'<div style="font-size:9px;color:var(--tl)">+'+Math.max(50,streak*20)+'⭐ при вході. '+(streak>=3?"Не переривай!":"Заходь завтра!")+'</div></div></div></div>';
   }
   if(combo>=2){
     h+='<div class="card" style="border-color:#E65100"><div style="display:flex;align-items:center;gap:7px">'
@@ -1156,20 +1206,37 @@ function renderHome(){
 }
 
 function renderHomePreview(){
-  var lvl=getLvlN();
-  var unlocked=availRec().slice(0,6);
-  var next=REC.concat(SPEC).filter(function(r){return r.unlockLvl>lvl;}).sort(function(a,b){return a.unlockLvl-b.unlockLvl;}).slice(0,3);
-  var h='<div class="card home-preview"><div style="'+pf('font-size:11px;font-weight:700;color:var(--e);margin-bottom:2px')+'">📖 Меню сьогодні</div>'
-    +'<div style="font-size:9px;color:var(--tl)">Доступні напої та найближчі відкриття</div>';
-  h+='<div class="recipe-mini-grid">'+unlocked.map(function(r){
-    return '<div class="recipe-mini"><span>'+r.e+'</span><div>'+r.n+'</div></div>';
-  }).join("")+'</div>';
-  if(next.length){
-    h+='<div style="font-size:9px;font-weight:800;color:var(--e);margin-top:9px;margin-bottom:5px">Скоро відкриється</div>'
-      +next.map(function(r){
-        return '<div style="display:flex;align-items:center;justify-content:space-between;font-size:9px;color:var(--ti);padding:5px 0;border-top:1px solid rgba(228,208,180,.7)">'
-          +'<span>'+r.e+' '+r.n+'</span><span style="font-weight:800;color:var(--c)">Рів.'+r.unlockLvl+'</span></div>';
-      }).join("");
+  var withPhotos=availRec().filter(function(r){return !!DRINK_IMGS[r.n];});
+  if(!withPhotos.length)withPhotos=availRec();
+  var d=new Date();
+  var seed=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
+  var ordered=withPhotos.slice().sort(function(a,b){
+    var ha=(seed*(a.n.charCodeAt(0)+1))%97;
+    var hb=(seed*(b.n.charCodeAt(0)+1))%97;
+    return hb-ha;
+  });
+  var top=ordered[0];
+  var runners=ordered.slice(1,3);
+  var h='<div class="card home-preview">';
+  h+='<div style="font-size:11px;font-weight:700;color:var(--e);margin-bottom:1px">🏆 Хіт дня</div>';
+  h+='<div style="font-size:8px;color:var(--tl);margin-bottom:8px">Найпопулярніший напій за сьогодні</div>';
+  if(top){
+    h+='<div style="display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--cr),#fff);border-radius:10px;padding:8px;margin-bottom:7px">';
+    h+='<div style="width:64px;height:64px;border-radius:9px;overflow:hidden;flex-shrink:0">'+recImg(top,64)+'</div>';
+    h+='<div style="flex:1"><div style="font-family:\'Playfair Display\',serif;font-size:13px;font-weight:700;color:var(--e)">'+top.n+'</div>';
+    h+='<div style="font-size:8px;color:var(--tl);margin-top:2px">'+top.b.map(function(id){var i=allIng().find(function(a){return a.id===id;});return i?i.e+' '+i.n:'';}).join(' · ')+'</div>';
+    h+='<div style="font-size:9px;font-weight:800;color:var(--c);margin-top:4px">⭐ Лідер продажів</div>';
+    h+='</div></div>';
+  }
+  if(runners.length){
+    h+='<div style="font-size:9px;font-weight:700;color:var(--e);margin-bottom:4px">Також популярні сьогодні</div>';
+    h+=runners.map(function(r,ri){
+      return '<div style="display:flex;align-items:center;gap:9px;padding:5px 0'+(ri>0?';border-top:1px solid rgba(228,208,180,.6)':'')+'">'
+        +'<div style="width:38px;height:38px;border-radius:7px;overflow:hidden;flex-shrink:0">'+recImg(r,38)+'</div>'
+        +'<div><div style="font-size:9px;font-weight:700;color:var(--e)">'+r.n+'</div>'
+        +'<div style="font-size:8px;color:var(--tl);margin-top:1px">'+r.b.map(function(id){var i=allIng().find(function(a){return a.id===id;});return i?i.e:'';}).join(' ')+'</div></div>'
+        +'</div>';
+    }).join('');
   }
   h+='</div>';
   return h;
@@ -1237,7 +1304,6 @@ function renderOrders(){
     +'<div class="p-stat"><div style="'+pf('font-size:15px;font-weight:900;color:var(--e)')+'">'+tipCount+'</div><div style="font-size:8px;color:var(--tl)">Чайових</div></div>'
     +'<div class="p-stat"><div style="'+pf('font-size:15px;font-weight:900;color:var(--e)')+'">'+missed+'</div><div style="font-size:8px;color:var(--tl)">Пропущено</div></div>'
     +'</div></div>'
-    +'<div style="font-size:9px;color:var(--tl);line-height:1.4;padding:0 3px">Виконані замовлення більше не займають місце в цій вкладці, але вони рахуються в профілі, місіях і статистиці.</div>';
   h+='</div></div>';
   return h;
 }
@@ -1305,53 +1371,56 @@ function buyItem(id){
 // ─── LEADERBOARD ───
 function renderLeaderboard(){
   var local=getLB();
-  var all=LB_S.map(function(x){return{n:x.n,e:x.e,r:x.r,rev:x.rev,sc:calcScore(x.xpEq,x.r,x.rev),local:false};})
-    .concat(local.map(function(x){return{n:x.nick,e:x.ava,r:x.r||0,rev:x.rev||0,sc:calcScore(x.xp||0,x.r||0,x.rev||0),local:true,data:x};}))
-    .sort(function(a,b){return b.sc-a.sc;});
+  function xpToLvl(xpV){return LVS.filter(function(l){return xpV>=l.xp;}).length||1;}
+  var all=LB_S.map(function(x){return{n:x.n,e:x.e,lvl:x.lvl,xp:x.xpEq,local:false};})
+    .concat(local.map(function(x){var lv=xpToLvl(x.xp||0);return{n:x.nick,e:x.ava,lvl:lv,xp:x.xp||0,local:true,data:x};}))
+    .sort(function(a,b){return b.lvl-a.lvl;});
+  var myLvl=getLvlN();
+  var myLvlName=getLvl().name;
   var top3=all.slice(0,3);var podOrd=[1,0,2];
   var pHts={1:62,2:43,3:34};
   var pBgs={1:"linear-gradient(135deg,#D4A843,#F0C96B)",2:"linear-gradient(135deg,#9E9E9E,#BDBDBD)",3:"linear-gradient(135deg,#C8813A,#E09B56)"};
-  var h='<div class="pt">Рейтинг 🏆</div><div class="ps">Позиція = рівень + відгуки клієнтів</div><div class="podium">';
+  var h='<div class="pt">Рейтинг 🏆</div><div class="ps">Позиція = рівень прокачки</div><div class="podium">';
   podOrd.forEach(function(idx,pos){
-    var p=pos===0?2:pos===1?1:3;var x=top3[idx]||{n:"—",e:"☕",r:0};
+    var p=pos===0?2:pos===1?1:3;var x=top3[idx]||{n:"—",e:"☕",lvl:0};
     h+='<div class="pod-i"><div class="pod-a">'+x.e+'</div>'
       +'<div style="font-size:8px;font-weight:700;color:var(--e);margin-bottom:1px;line-height:1.3">'+x.n+'</div>'
-      +'<div style="font-size:8px;color:var(--c)">'+(x.r?x.r.toFixed(1)+"★":"—")+'</div>'
+      +'<div style="font-size:8px;color:var(--c)">Рів. '+x.lvl+'</div>'
       +'<div class="pod-b" style="height:'+pHts[p]+'px;background:'+pBgs[p]+'">'+p+'</div></div>';
   });
   h+='</div>';
   all.forEach(function(l,i){
     var me=l.local&&l.data&&l.data.nick===prof.nick;
     h+='<div class="lb-row'+(me?" lb-me":"")+'" '
-      +(l.local?'onclick="openPM(\''+encodeURIComponent(JSON.stringify(l.data))+'\')"':"")+'>'
+      +(l.local?'onclick="openPM(&quot;'+encodeURIComponent(JSON.stringify(l.data))+'&quot;)"':"")+'>'
       +'<span style="'+pf('font-weight:900;font-size:12px;color:var(--c);width:15px')+'">'+(i+1)+'</span>'
       +'<span style="font-size:15px">'+l.e+'</span>'
       +'<div style="flex:1">'
       +'<div style="font-weight:600;color:var(--e);font-size:10px">'+l.n+(me?" (Ти)":"")+'</div>'
-      +'<div style="font-size:8px;color:var(--c)">'+starsStr(l.r)+'</div></div>'
+      +'<div style="font-size:8px;color:var(--tl)">'+LVS[Math.min(l.lvl-1,LVS.length-1)].name+'</div></div>'
       +'<div style="text-align:right">'
-      +'<div style="font-weight:700;font-size:10px;color:var(--e)">'+(l.r?l.r.toFixed(1)+"/5":"—")+'</div>'
-      +'<div style="font-size:7px;color:var(--tl)">'+l.rev+" відг."+'</div></div></div>';
+      +'<div style="'+pf('font-weight:700;font-size:11px;color:var(--e)')+'">Рів. '+l.lvl+'</div>'
+      +'</div></div>';
   });
-  var myScore=calcScore(xp,cafeRating,reviews.length);
   h+='<div style="background:linear-gradient(135deg,var(--e),var(--d));color:var(--w);border-radius:12px;padding:12px;text-align:center;margin-top:7px">'
-    +'<div style="font-size:8px;opacity:.72;margin-bottom:1px">☕ '+(prof?prof.nick:"Dream Coffee")+'</div>'
-    +'<div style="font-size:15px;color:var(--t)">'+starsStr(cafeRating)+'</div>'
-    +'<div style="'+pf('font-size:17px;font-weight:900')+'">'+(cafeRating?cafeRating.toFixed(1)+"/5":"Немає відгуків")+'</div>'
-    +'<div style="font-size:8px;opacity:.6;margin-top:2px">'+reviews.length+" відгуків · Рів."+getLvlN()+" · Рейтинг: "+myScore+'</div></div>';
+    +'<div style="font-size:8px;opacity:.72;margin-bottom:4px">☕ '+(prof?prof.nick:"Dream Coffee")+'</div>'
+    +'<div style="'+pf('font-size:22px;font-weight:900')+'">Рів. '+myLvl+'</div>'
+    +'<div style="font-size:10px;opacity:.85;margin-top:2px">'+myLvlName+'</div></div>';
   return h;
 }
 function openPM(enc){
   var d=JSON.parse(decodeURIComponent(enc));
   document.getElementById("pm-ava").textContent=d.ava||"☕";
-  document.getElementById("pm-nick").textContent=d.nick;
-  document.getElementById("pm-stars").textContent=starsStr(d.r||0)+" "+(d.r?d.r.toFixed(1)+"/5":"—");
-  document.getElementById("pm-stats").innerHTML=[{v:d.r?d.r.toFixed(1)+"/5":"—",l:"Рейтинг"},{v:d.rev||0,l:"Відгуків"},{v:d.brews||0,l:"Зварено"}]
-    .map(function(x){
-      return '<div style="background:var(--cr);border-radius:8px;padding:7px 4px;text-align:center">'
-        +'<div style="'+pf('font-size:13px;font-weight:700;color:var(--e)')+'">'+x.v+'</div>'
-        +'<div style="font-size:8px;color:var(--tl)">'+x.l+'</div></div>';
-    }).join("");
+  document.getElementById("pm-nick").textContent=d.nick||"—";
+  document.getElementById("pm-stars").textContent="";
+  document.getElementById("pm-stats").innerHTML=[
+    {v:"Рів. "+(LVS.filter(function(l){return (d.xp||0)>=l.xp;}).length||1),l:"Рівень"},
+    {v:d.brews||0,l:"Зварено"},
+    {v:d.xp||0,l:"XP"}
+  ].map(function(x){
+    return '<div class="p-stat"><div style="font-size:13px;font-weight:700;color:var(--e)">'+x.v+'</div>'
+      +'<div style="font-size:8px;color:var(--tl)">'+x.l+'</div></div>';
+  }).join("");
   openOv("pm-ov");
 }
 
@@ -1483,7 +1552,7 @@ function startTimers(){
 // ═══ QUEUE RENDER ═══
 function renderQueue(){
   var el=document.getElementById("qlist");if(!el)return;
-  var vis=queue.filter(function(o){return o.status!=="done"&&o.status!=="missed";});
+  var vis=queue.filter(function(o){return o.status!=="done"&&o.status!=="missed";}).sort(function(a,b){return (a.wait-a.elapsed)-(b.wait-b.elapsed);});
   if(!vis.length){
     el.innerHTML='<div style="text-align:center;padding:32px 16px;color:var(--tl)">'
       +'<div style="font-size:38px;opacity:.35;margin-bottom:8px">☕</div>'
@@ -1547,7 +1616,7 @@ function genIceSVG(iceCount,topY){
 // ═══ BREW ═══
 function setupBrew(){
   if(!curOrd)return;
-  document.getElementById("ob-ico").textContent=curOrd.rec.e;
+  document.getElementById("ob-ico").innerHTML=recImg(curOrd.rec,44);
   document.getElementById("ob-name").textContent=curOrd.rec.n+(curOrd.isSp?" ⭐":curOrd.isU?" 🔥":"")+(curOrd.cups>1?" ×"+curOrd.cups:"")+(curOrd.wish?" + "+curOrd.wish.e+" "+curOrd.wish.n:"");
   document.getElementById("ob-cl").textContent=curOrd.cl.a+" "+curOrd.cl.n+" чекає!";
   var rem=Math.max(0,curOrd.wait-curOrd.elapsed),frac=rem/curOrd.wait;
@@ -1662,16 +1731,17 @@ function serve(){
   var hi=hist.find(function(x){return x.id===o.id;});if(hi){hi.status="done";hi.earned=earned;hi.tip=tip;}
   addCombo();var xpG=o.isSp?15:o.isU?9:5;addXP(xpG);
   // Review — stars capped by player level
-  var rChance=frac>.6?0.65:frac>.35?0.40:0.15;
+  // Відгук: завжди при неправильній чашці, інакше — шанс від швидкості
+  var rChance=wrongCup?1.0:frac>.6?0.65:frac>.35?0.40:0.20;
   if(Math.random()<rChance){
-    var rev=genReview(o.cl,frac,o.rec.n);
+    var rev=genReview(o.cl,frac,o.rec.n,wrongCup);
     reviews.unshift(rev);if(reviews.length>30)reviews=reviews.slice(0,30);
     cafeRating=+(reviews.reduce(function(s,r){return s+r.stars;},0)/reviews.length).toFixed(1);
   }
   syncUI();checkMissions();
-  document.getElementById("r-ico").textContent=o.rec.e;
+  document.getElementById("r-ico").innerHTML=recImg(o.rec,80);
   document.getElementById("r-ti").textContent=wrongCup?"Не та чашка! ❌":(tip>0?(o.isSp?"Особливий успіх! 🌟":"Відмінно! 🎉"):"Виконано!");
-  document.getElementById("r-su").textContent=wrongCup?(o.cl.a+" "+o.cl.n+" незадоволений чашкою… -50%"):(o.cl.a+" "+o.cl.n+(tip>0?" лишив чайових!":" задоволений!"));
+  var isFem=o.cl.g==="f";document.getElementById("r-su").textContent=wrongCup?(o.cl.a+" "+o.cl.n+" "+(isFem?"незадоволена":"незадоволений")+" чашкою… -50%"):(o.cl.a+" "+o.cl.n+(tip>0?(isFem?" лишила чайових!":" лишив чайових!"):(isFem?" задоволена!":" задоволений!")));
   var ea='<div style="'+pf('font-size:17px;font-weight:900;color:'+(wrongCup?"#C62828":"var(--e)")+';line-height:1.6')+'">+ '+earned+"⭐"+(wrongCup?" (штраф -50%)":mult>1?" (×"+mult.toFixed(1)+")":'')+'</div>';
   if(wrongCup)ea+='<div style="font-size:9px;color:#C62828;margin-top:2px">Потрібна: '+getCupLabel(o.rec.cup||"mug")+'</div>';
   if(!wrongCup&&tip>0)ea+='<div style="'+pf('font-size:13px;font-weight:900;color:var(--c);line-height:1.5')+'">+ '+tip+"⭐ чайових 💛</div>";
@@ -1686,7 +1756,7 @@ function closeResult(){
 }
 
 // ═══ BOOT ═══
-initAva();
+/* initAva removed */
 if(loadSt()){startGame();}
 else{showScr("s-ob");}
 </script>
