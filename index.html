@@ -282,7 +282,7 @@ body{display:flex;align-items:center;justify-content:center;}
   .prof-hero .xpbar{grid-column:1;max-width:520px;width:100%;}
   .prof-edit{grid-column:2;grid-row:1 / 6;align-self:center;font-size:11px;padding:9px 18px;margin-top:0;width:auto;}
   .recipe-mini-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
-  .prof-stats{grid-template-columns:repeat(6,1fr);gap:8px;}
+  .prof-stats{grid-template-columns:repeat(5,1fr);gap:8px;}
   .ach-grid{grid-template-columns:repeat(3,1fr);gap:9px;}
   .ing-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;}
   .cup-wrap{max-width:620px;margin-left:auto;margin-right:auto;}
@@ -493,7 +493,6 @@ var SPEC = [
   {n:"Мокко",               e:"🍫", b:["coffee","cocoa","milk"],            unlockLvl:3, reward:1.7, cup:"mug"},
   {n:"Матча Лате",          e:"🍵", b:["matcha","milk","milk"],             unlockLvl:4, reward:1.6, cup:"mug"},
   {n:"Какао з вершками",    e:"🍫", b:["cocoa","milk","cream"],             unlockLvl:4, reward:1.7, cup:"mug"},
-  {n:"Карамельний Макіато", e:"🍮", b:["coffee","milk","caramel","sugar"],  unlockLvl:4, reward:1.8, cup:"mug"},
   {n:"Шоколадний Мокачіно", e:"🍫", b:["coffee","chocolate","milk","cream"],unlockLvl:4, reward:2.0, cup:"mug"},
   {n:"Айс-матча",           e:"🍵", b:["matcha","milk","ice"],              unlockLvl:5, reward:1.8, cup:"tall"},
   {n:"Пряний какао",        e:"🍫", b:["cocoa","milk","cinnamon"],          unlockLvl:5, reward:1.9, cup:"mug"},
@@ -547,7 +546,7 @@ var CLIENTS = [
   {n:"Даша",a:"👱‍♀️",g:"f"},{n:"Артем",a:"🧑",g:"m"},{n:"Христина",a:"👩",g:"f"},
   {n:"Богдан",a:"👨",g:"m"},{n:"Ірина",a:"👩",g:"f"},{n:"Тарас",a:"🧔",g:"m"},
   {n:"Маша",a:"👧",g:"f"},{n:"Влад",a:"👦",g:"m"},{n:"Соня",a:"🧒",g:"f"},
-  {n:"Гриша",a:"👴",g:"m"},{n:"Поліна",a:"👩",g:"f"},{n:"Денис",a:"👨",g:"m"},
+  {n:"Олег",a:"👨",g:"m"},{n:"Поліна",a:"👩",g:"f"},{n:"Денис",a:"👨",g:"m"},
   {n:"Яна",a:"👩",g:"f"},{n:"Кирило",a:"🧑",g:"m"},{n:"Валерія",a:"👩",g:"f"},
   {n:"Остап",a:"👨",g:"m"},{n:"Діана",a:"👧",g:"f"},{n:"Євген",a:"🧑",g:"m"},
   {n:"Рита",a:"👩",g:"f"},{n:"Нікіта",a:"👦",g:"m"},{n:"Аліна",a:"👩",g:"f"},
@@ -634,62 +633,162 @@ var LB_S = [
 
 // Review texts — max stars depend on player level (new players can't get 5 stars easily)
 var REV_TXT = {
-  5:[
-    "Вау!",
-    "Ідеально!",
-    "🔥",
-    "Топ!",
-    "Найкраща кава в місті, повертаюсь щоразу!",
-    "Смак неймовірний, обслуговування швидке — що ще треба для щастя?",
-    "Моя нова улюблена кав'ярня. Вже порекомендувала всім подругам і знайомим!",
-    "Щодня краще і краще! Тепер точно мій улюблений заклад 💛",
-    "Просто бомба. Прийду завтра знову!",
-    "5/5, без зауважень. Все ідеально",
-    "Захоплена! Смачно, швидко, все на вищому рівні. Дякую від душі!",
-    "Неймовірно! Ніколи не думала, що кава може бути настільки смачною"
-  ],
-  4:[
-    "Смачно!",
-    "Добре 👍",
-    "Прийду ще",
-    "Гарна кава, дякую",
-    "Смачна кава, трохи довго чекала, але загалом задоволена",
-    "Майже ідеально. Ще трошки і буде 5 зірок!",
-    "Якісно і приємно, рекомендую",
-    "Добре, але бувало і трохи краще. Загалом задоволений",
-    "Непогано! Кава гаряча і ароматна. Персонал уважний",
-    "Дуже смачно, дякую! Повернусь з подругою"
-  ],
-  3:[
-    "Нормально",
-    "Середньо",
-    "Ок",
-    "Не погано",
-    "Кава хороша, але чекала досить довго. Є куди рости!",
-    "Нічого особливого, але й не погано. Прийнятно",
-    "Ок, але очікувала трохи більшого від цього місця",
-    "Прийнятно для швидкої кави по дорозі",
-    "Смак непоганий, але обслуговування можна покращити"
-  ],
-  2:[
-    "Холодна 😞",
-    "Довго...",
-    "Не сподобалось",
-    "Розчарована",
-    "Дуже довго чекати, кава встигла охолонути поки несли",
-    "Кава не зовсім те, що я замовляла. Потрібно більше уваги до деталей",
-    "Смак міг бути набагато кращим. І час очікування вбиває",
-    "Не моє. Сподіваюсь, наступного разу буде краще"
-  ],
-  1:[
-    "Жах",
-    "Ні",
-    "Не рекомендую нікому",
-    "Кава не за рецептом, і це одразу відчувається на смаку",
-    "Жахливо довго чекала, і в результаті — суцільне розчарування",
-    "Нічого доброго сказати не можу. Сподіваюсь, власники прочитають ці відгуки"
-  ]
-};
+  5:{
+    f:[
+      "ааа це просто топ 🔥",
+      "боже як смачно, хочу ще",
+      "Вау!!!",
+      "Ідеально 🫶",
+      "приходжу вже третій день поспіль 😅 не можу зупинитись",
+      "найкраща кава в районі, без варіантів",
+      "подружку привела — тепер вона теж фанатка",
+      "це просто щастя в чашці",
+      "швидко, смачно, ще й гарно подали — 5/5",
+      "Просто бомба. Прийду завтра знову!",
+      "не очікувала що так зайде, а тепер кожен ранок тут",
+      "оце я розумію кава ☕🔥",
+      "подруга порадила — тепер я теж раджу всім",
+      "5 зірок і ще раз 5 зірок",
+      "чому я не знайшла це місце раніше?! 😭",
+      "ніколи не думала що полюблю каву — тепер розумію 🥺",
+      "принесла мамі — вона теж у захваті",
+      "щодня краще! мій улюблений заклад 💛",
+      "смак неймовірний, і зробили так швидко!"
+    ],
+    m:[
+      "ааа це просто топ 🔥",
+      "боже як смачно, хочу ще",
+      "Вау!!!",
+      "Ідеально 🫶",
+      "приходжу вже третій день поспіль 😅 не можу зупинитись",
+      "найкраща кава в районі, без варіантів",
+      "другу розповів — тепер він теж фанат",
+      "це просто щастя в чашці",
+      "швидко, смачно, ще й гарно подали — 5/5",
+      "Просто бомба. Прийду завтра знову!",
+      "не очікував що так зайде, а тепер кожен ранок тут",
+      "оце я розумію кава ☕🔥",
+      "товариш порадив — тепер я теж раджу всім",
+      "5 зірок і ще раз 5 зірок",
+      "чому я не знайшов це місце раніше?! 😭",
+      "взяв другу чашку одразу — не міг зупинитись",
+      "щодня краще! мій улюблений заклад 💛",
+      "смак неймовірний, і зробили так швидко!"
+    ]
+  },
+  4:{
+    f:[
+      "смачно! трохи довго але ок",
+      "Добре 👍",
+      "прийду ще, сподобалось",
+      "гарна кава, дякую",
+      "майже ідеал, ще трошки і буде 5 ⭐",
+      "загалом задоволена, рекомендую",
+      "непогано! кава гаряча й ароматна",
+      "краще ніж у сусідньому кафе точно",
+      "4/5, все окей без претензій",
+      "дуже смачно, повернусь з подругою",
+      "нормально! я б ще взяла",
+      "позитивний досвід, запишу в улюблені",
+      "смакота, тільки черга трохи дратувала"
+    ],
+    m:[
+      "смачно! трохи довго але ок",
+      "Добре 👍",
+      "прийду ще, сподобалось",
+      "гарна кава, дякую",
+      "майже ідеал, ще трошки і буде 5 ⭐",
+      "загалом задоволений, рекомендую",
+      "непогано! кава гаряча й ароматна",
+      "краще ніж у сусідньому кафе точно",
+      "4/5, все окей без претензій",
+      "дуже смачно, повернусь з другом",
+      "нормально! я б ще взяв",
+      "позитивний досвід, запишу в улюблені",
+      "смакота, тільки черга трохи дратувала"
+    ]
+  },
+  3:{
+    f:[
+      "ну так, нічого особливого",
+      "нормально чесно кажучи",
+      "середнячок",
+      "ок, але я очікувала більшого",
+      "прийнятно для швидкої кави",
+      "побувало краще, побувало гірше",
+      "кава норм, але щось не вистачає",
+      "не вразило, але й не розчарувало",
+      "3 зірки — чекала довго, смак звичайний",
+      "мм, ну так собі. можна краще",
+      "наступного разу спробую щось інше",
+      "трохи розчарована, але не катастрофа"
+    ],
+    m:[
+      "ну так, нічого особливого",
+      "нормально чесно кажучи",
+      "середнячок",
+      "ок, але я очікував більшого",
+      "прийнятно для швидкої кави",
+      "побувало краще, побувало гірше",
+      "кава норм, але щось не вистачає",
+      "не вразило, але й не розчарувало",
+      "3 зірки — чекав довго, смак звичайний",
+      "мм, ну так собі. можна краще",
+      "наступного разу спробую щось інше",
+      "трохи розчарований, але не катастрофа"
+    ]
+  },
+  2:{
+    f:[
+      "довго і кава вже не гаряча 😞",
+      "чекала вічність...",
+      "не сподобалось",
+      "розчарована, сподівалась на більше",
+      "не зовсім те що замовляла",
+      "щось не те сьогодні із смаком",
+      "смак міг бути набагато кращим",
+      "за такий час очікування хочеться більшого",
+      "прийду ще раз і дам другий шанс, але поки розчарована",
+      "кава охолола поки несли — це провал"
+    ],
+    m:[
+      "довго і кава вже не гаряча 😞",
+      "чекав вічність...",
+      "не сподобалось",
+      "розчарований, сподівався на більше",
+      "не зовсім те що замовляв",
+      "щось не те сьогодні із смаком",
+      "смак міг бути набагато кращим",
+      "за такий час очікування хочеться більшого",
+      "прийду ще раз і дам другий шанс, але поки розчарований",
+      "кава охолола поки несли — це провал"
+    ]
+  },
+  1:{
+    f:[
+      "ні, просто ні",
+      "жах жахливий",
+      "не рекомендую",
+      "витрата часу і грошей",
+      "кава не за рецептом, і це одразу відчуваєш",
+      "прийшла вдруге — той самий жах. більше не повернусь",
+      "не розумію як можна так робити каву 😤",
+      "чекала годину, і ось це??? серйозно??",
+      "найгірша кава в моєму житті, і я багато пила кав"
+    ],
+    m:[
+      "ні, просто ні",
+      "жах жахливий",
+      "не рекомендую",
+      "витрата часу і грошей",
+      "кава не за рецептом, і це одразу відчуваєш",
+      "прийшов вдруге — той самий жах. більше не повернусь",
+      "не розумію як можна так робити каву 😤",
+      "чекав годину, і ось це??? серйозно??",
+      "найгірша кава в моєму житті, і я багато пив кав"
+    ]
+  }
+}
 
 var CIRC = 2 * Math.PI * 19;
 
@@ -777,9 +876,10 @@ function mkOrd(){
   } else {
     rec=Object.assign({},REC[0]);
   }
-  // Syrup wish: only for regular orders, only from owned syrups
+  // Syrup wish: only for regular orders, only from owned syrups, not for Еспресо/Американо
   var wish=null;
-  if(!isSp){
+  var noSyrupDrinks=["Еспресо","Американо"];
+  if(!isSp&&noSyrupDrinks.indexOf(rec.n)<0){
     var ownedSyrups=SI.filter(function(i){return owned.has(i.id)&&i.cat==="Сиропи";});
     if(ownedSyrups.length&&Math.random()<0.35){
       wish=ownedSyrups[Math.floor(Math.random()*ownedSyrups.length)];
@@ -916,7 +1016,8 @@ function genReview(cl,frac,drinkName,wrongCup){
     stars=roll<0.15?Math.max(1,baseStars-1):baseStars;
     stars=Math.min(ms,stars);
   }
-  var txts=REV_TXT[stars]||REV_TXT[3];
+  var pool=REV_TXT[stars]||REV_TXT[3];
+  var txts=(pool[cl.g]||pool.f);
   var text=txts[Math.floor(Math.random()*txts.length)];
   return{client:cl,stars:stars,text:text,drink:drinkName,time:new Date().toLocaleTimeString("uk-UA",{hour:"2-digit",minute:"2-digit"})};
 }
@@ -1183,13 +1284,7 @@ function renderHome(){
       +'<div><div style="'+pf('font-size:11px;font-weight:700')+'">Репутація: '+starsStr(cafeRating)+' '+cafeRating.toFixed(1)+'/5</div>'
       +'<div style="font-size:9px;color:var(--tl)">'+rtxt+'</div></div></div></div>';
   }
-  if(active.length){
-    h+='<div class="card" style="border-color:'+(urg?"#C62828":spc?"#9C27B0":"var(--bd)")+'">'
-      +'<div style="display:flex;justify-content:space-between;align-items:center">'
-      +'<div><div style="'+pf('font-size:11px;font-weight:700')+'">📦 '+active.length+' замовлень</div>'
-      +'<div style="font-size:9px;color:var(--tl)">'+(urg?"🔥 "+urg+" терм. ":"")+(spc?"⭐ "+spc+" особл.":"")+'</div></div>'
-      +'<button class="btn-s" onclick="openOrdersTab()">Варити →</button></div></div>';
-  }
+
   h+='<div class="card"><div style="'+pf('font-size:11px;font-weight:700;margin-bottom:6px')+'">🎯 Активна місія</div>'
     +(am?'<div style="display:flex;align-items:center;gap:7px">'
       +'<span style="font-size:18px">'+am.e+'</span>'
@@ -1446,7 +1541,7 @@ function renderProfile(){
 function renderProfStats(){
   var achDone=MS.filter(function(m){return completedMissions.has(m.id);}).length;
   var h='<div class="prof-stats">'
-    +[{v:"⭐ "+money,l:"Баланс"},{v:brews,l:"Зварено"},{v:dones,l:"Виконано"},{v:tipCount,l:"Чайових"},{v:specials,l:"Особливих"},{v:achDone+"/"+MS.length,l:"Місій"}]
+    +[{v:"⭐ "+money,l:"Баланс"},{v:dones,l:"Виконано"},{v:tipCount,l:"Чайових"},{v:specials,l:"Особливих"},{v:achDone+"/"+MS.length,l:"Місій"}]
     .map(function(x){
       return '<div class="p-stat"><div style="'+pf('font-size:13px;font-weight:700;color:var(--e)')+'">'+x.v+'</div>'
         +'<div style="font-size:8px;color:var(--tl)">'+x.l+'</div></div>';
@@ -1538,12 +1633,17 @@ function startTimers(){
       }
       if(rem<=0){
         clearInterval(timers[o.id]);delete timers[o.id];
-        queue[idx].status="missed";
-        var hh=hist.find(function(x){return x.id===o.id;});if(hh)hh.status="missed";
-        queue=queue.filter(function(x){return x.id!==o.id;});
-        renderQueue();if(curTab==="orders")renderTab("orders");
         var nm=o.cl.n;var isFem=(nm[nm.length-1]==="а"||nm[nm.length-1]==="я");
-        toast("😞 "+o.cl.a+" "+nm+(isFem?" пішла!":" пішов!"));
+        // If this order is currently being brewed — let the player finish it and still earn
+        if(curOrd&&curOrd.id===o.id){
+          queue[idx].timedOut=true;
+        } else {
+          queue[idx].status="missed";
+          var hh=hist.find(function(x){return x.id===o.id;});if(hh)hh.status="missed";
+          queue=queue.filter(function(x){return x.id!==o.id;});
+          renderQueue();if(curTab==="orders")renderTab("orders");
+          toast("😞 "+o.cl.a+" "+nm+(isFem?" пішла!":" пішов!"));
+        }
       }
     },1000);
   });
@@ -1715,23 +1815,37 @@ function serve(){
   if(!isMixed||!curOrd)return;
   var o=curOrd;clearInterval(timers[o.id]);delete timers[o.id];
   queue=queue.filter(function(x){return x.id!==o.id;});o.status="done";
+  var wrongCup=(selectedCup!==(o.rec.cup||"mug"));
+  var isFem=o.cl.g==="f";
+  // ── Client already left while brewing ──────────────────────────────────
+  if(o.timedOut){
+    money+=0;brews++;dones++;
+    o.earned=0;o.tip=0;o.wrongCup=wrongCup;
+    var hi=hist.find(function(x){return x.id===o.id;});if(hi){hi.status="done";hi.earned=0;hi.tip=0;}
+    syncUI();checkMissions();
+    document.getElementById("r-ico").innerHTML=recImg(o.rec,80);
+    document.getElementById("r-ti").textContent=wrongCup?"Клієнт пішов. Не та чашка! ❌":"Клієнт пішов! 😞";
+    document.getElementById("r-su").textContent=o.cl.a+" "+o.cl.n+" "+(isFem?"не задоволена.":"не задоволений.");
+    var ea2='<div style="'+pf('font-size:17px;font-weight:900;color:var(--tl);line-height:1.6')+'">0 грн.</div>';
+    if(wrongCup)ea2+='<div style="font-size:9px;color:#C62828;margin-top:2px">Потрібна: '+getCupLabel(o.rec.cup||"mug")+'</div>';
+    document.getElementById("r-ea").innerHTML=ea2;
+    setPhase(3);openOv("res-ov");curOrd=null;mix={};isMixed=false;
+    return;
+  }
+  // ── Normal serve ───────────────────────────────────────────────────────
   var rem=Math.max(0,o.wait-o.elapsed),frac=rem/o.wait;
   var baseTipChance=frac>.65?0.28:frac>.4?0.12:0;
   var tipChance=baseTipChance+(o.tipBonus||0);
-  var tip=Math.random()<tipChance?(frac>.65?Math.round(o.base*.14):Math.round(o.base*.07)):0;
+  var tip=wrongCup?0:Math.random()<tipChance?(frac>.65?Math.round(o.base*.14):Math.round(o.base*.07)):0;
   var mult=getComboMult();
   if(randomEvent==="vip"){mult*=2;randomEvent=null;}
   if(randomEvent==="festival")mult*=1.3;
-  // Cup penalty: wrong cup = -50% earnings, no tips
-  var wrongCup=(selectedCup!==(o.rec.cup||"mug"));
-  if(wrongCup){mult*=0.5;tip=0;}
-  var earned=Math.round((o.base+tip)*mult);
+  // Wrong cup: client does not pay — 0 money
+  var earned=wrongCup?0:Math.round((o.base+tip)*mult);
   money+=earned;brews++;dones++;if(tip>0)tipCount++;if(o.isSp)specials++;totalEarned+=earned;
   o.earned=earned;o.tip=tip;o.wrongCup=wrongCup;
   var hi=hist.find(function(x){return x.id===o.id;});if(hi){hi.status="done";hi.earned=earned;hi.tip=tip;}
   addCombo();var xpG=o.isSp?15:o.isU?9:5;addXP(xpG);
-  // Review — stars capped by player level
-  // Відгук: завжди при неправильній чашці, інакше — шанс від швидкості
   var rChance=wrongCup?1.0:frac>.6?0.65:frac>.35?0.40:0.20;
   if(Math.random()<rChance){
     var rev=genReview(o.cl,frac,o.rec.n,wrongCup);
@@ -1741,8 +1855,8 @@ function serve(){
   syncUI();checkMissions();
   document.getElementById("r-ico").innerHTML=recImg(o.rec,80);
   document.getElementById("r-ti").textContent=wrongCup?"Не та чашка! ❌":(tip>0?(o.isSp?"Особливий успіх! 🌟":"Відмінно! 🎉"):"Виконано!");
-  var isFem=o.cl.g==="f";document.getElementById("r-su").textContent=wrongCup?(o.cl.a+" "+o.cl.n+" "+(isFem?"незадоволена":"незадоволений")+" чашкою… -50%"):(o.cl.a+" "+o.cl.n+(tip>0?(isFem?" лишила чайових!":" лишив чайових!"):(isFem?" задоволена!":" задоволений!")));
-  var ea='<div style="'+pf('font-size:17px;font-weight:900;color:'+(wrongCup?"#C62828":"var(--e)")+';line-height:1.6')+'">+ '+earned+"⭐"+(wrongCup?" (штраф -50%)":mult>1?" (×"+mult.toFixed(1)+")":'')+'</div>';
+  document.getElementById("r-su").textContent=wrongCup?(o.cl.a+" "+o.cl.n+" "+(isFem?"не задоволена.":"не задоволений.")):(o.cl.a+" "+o.cl.n+(isFem?" задоволена!":" задоволений!"));
+  var ea='<div style="'+pf('font-size:17px;font-weight:900;color:'+(wrongCup?"#C62828":"var(--e)")+';line-height:1.6')+'">'+(wrongCup?"0 грн.":"+ "+earned+"⭐"+(mult>1?" (×"+mult.toFixed(1)+")":''))+'</div>';
   if(wrongCup)ea+='<div style="font-size:9px;color:#C62828;margin-top:2px">Потрібна: '+getCupLabel(o.rec.cup||"mug")+'</div>';
   if(!wrongCup&&tip>0)ea+='<div style="'+pf('font-size:13px;font-weight:900;color:var(--c);line-height:1.5')+'">+ '+tip+"⭐ чайових 💛</div>";
   ea+='<div style="font-size:9px;color:var(--tl);margin-top:2px">+'+xpG+"XP"+(combo>=2?" · 🔥 Комбо ×"+combo:"")+'</div>';
