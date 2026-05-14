@@ -480,22 +480,22 @@ var REC = [
   {n:"Американо",    e:"🖤", b:["coffee","water","water"],    unlockLvl:1, cup:"mug"},
   {n:"Лате",         e:"🥛", b:["coffee","milk","milk"],      unlockLvl:1, cup:"mug"},
   {n:"Капучіно",     e:"☕", b:["coffee","milk","cream"],     unlockLvl:2, cup:"mug"},
-  {n:"Матча",        e:"🍵", b:["matcha","water"],            unlockLvl:3, cup:"mug"},
-  {n:"Какао",        e:"🍫", b:["cocoa","milk","sugar"],      unlockLvl:3, cup:"mug"},
+  {n:"Матча",        e:"🍵", b:["matcha","water"],            unlockLvl:5, cup:"mug"},
+  {n:"Какао",        e:"🍫", b:["cocoa","milk","sugar"],      unlockLvl:6, cup:"mug"},
   {n:"Айс-лате",     e:"🧊", b:["coffee","milk","ice"],       unlockLvl:3, cup:"tall"},
-  {n:"Айс-американо",e:"🧊", b:["coffee","water","ice","ice"],unlockLvl:3, cup:"tall"}
+  {n:"Айс-американо",e:"🧊", b:["coffee","water","ice","ice"],unlockLvl:2, cup:"tall"}
 ];
 
 // Special recipes with unlock level (need syrups purchased)
 var SPEC = [
   {n:"Полунична кава",      e:"🍓", b:["coffee","strawberry","milk"],       unlockLvl:2, reward:1.7, cup:"mug"},
   {n:"Банановий лате",      e:"🍌", b:["coffee","banana","milk"],           unlockLvl:2, reward:1.6, cup:"mug"},
-  {n:"Мокко",               e:"🍫", b:["coffee","cocoa","milk"],            unlockLvl:3, reward:1.7, cup:"mug"},
-  {n:"Матча Лате",          e:"🍵", b:["matcha","milk","milk"],             unlockLvl:4, reward:1.6, cup:"mug"},
-  {n:"Какао з вершками",    e:"🍫", b:["cocoa","milk","cream"],             unlockLvl:4, reward:1.7, cup:"mug"},
+  {n:"Мокко",               e:"🍫", b:["coffee","cocoa","milk"],            unlockLvl:7, reward:1.7, cup:"mug"},
+  {n:"Матча Лате",          e:"🍵", b:["matcha","milk","milk"],             unlockLvl:6, reward:1.6, cup:"mug"},
+  {n:"Какао з вершками",    e:"🍫", b:["cocoa","milk","cream"],             unlockLvl:7, reward:1.7, cup:"mug"},
   {n:"Шоколадний Мокачіно", e:"🍫", b:["coffee","chocolate","milk","cream"],unlockLvl:4, reward:2.0, cup:"mug"},
-  {n:"Айс-матча",           e:"🍵", b:["matcha","milk","ice"],              unlockLvl:5, reward:1.8, cup:"tall"},
-  {n:"Пряний какао",        e:"🍫", b:["cocoa","milk","cinnamon"],          unlockLvl:5, reward:1.9, cup:"mug"},
+  {n:"Айс-матча",           e:"🍵", b:["matcha","milk","ice"],              unlockLvl:6, reward:1.8, cup:"tall"},
+  {n:"Пряний какао",        e:"🍫", b:["cocoa","milk","cinnamon"],          unlockLvl:7, reward:1.9, cup:"mug"},
   {n:"Лавандовий Лате",     e:"💜", b:["milk","lavender","sugar"],          unlockLvl:5, reward:1.9, cup:"mug"}
 ];
 
@@ -514,12 +514,12 @@ var SI = [
   {id:"strawberry",n:"Полуничний",     e:"🍓",c:[220,20,50],  p:350,cat:"Сиропи",unlockLvl:1},
   {id:"banana",   n:"Банановий",     e:"🍌",c:[240,200,0],  p:450,cat:"Сиропи",unlockLvl:1},
   {id:"vanilla",  n:"Ванільний",     e:"🌸",c:[230,190,120],p:650,cat:"Сиропи",unlockLvl:2},
-  {id:"cocoa",    n:"Какао",         e:"🍫",c:[110,60,20],  p:550,cat:"Основи",unlockLvl:3},
+  {id:"cocoa",    n:"Какао",         e:"🍫",c:[110,60,20],  p:550,cat:"Основи",unlockLvl:6},
   {id:"caramel",  n:"Карамельний",   e:"🍮",c:[210,130,10], p:900, cat:"Сиропи",unlockLvl:3},
   {id:"chocolate",n:"Шоколадний",    e:"🍫",c:[18,10,5],    p:950, cat:"Сиропи",unlockLvl:3},
   {id:"coconut",  n:"Кокосовий",     e:"🥥",c:[130,85,45],  p:750, cat:"Сиропи",unlockLvl:3},
   {id:"cherry",   n:"Вишневий",      e:"🍒",c:[160,0,30],   p:850, cat:"Сиропи",unlockLvl:4},
-  {id:"matcha",   n:"Матча",         e:"🍵",c:[45,170,25],  p:800, cat:"Основи",unlockLvl:4},
+  {id:"matcha",   n:"Матча",         e:"🍵",c:[45,170,25],  p:800, cat:"Основи",unlockLvl:5},
   {id:"lavender", n:"Лавандовий",    e:"💜",c:[155,55,225], p:2000,cat:"Сиропи",unlockLvl:5}
 ];
 
@@ -793,7 +793,7 @@ var REV_TXT = {
 var CIRC = 2 * Math.PI * 19;
 
 // ═══ STATE ═══
-var prof=null, money=0, brews=0, dones=0, tipCount=0, specials=0, xp=0, totalEarned=0;
+var prof=null, money=0, brews=0, dones=0, tipCount=0, specials=0, xp=0, totalEarned=0, missedCount=0;
 var streak=0, lastDate="", combo=0, comboTmr=null;
 var reviews=[], cafeRating=0;
 var owned = new Set(BI.map(function(i){return i.id;}));
@@ -908,7 +908,7 @@ function saveSt(){
     localStorage.setItem("dc3_save",JSON.stringify({
       nick:prof.nick,ava:prof.ava,
       money:money,brews:brews,dones:dones,tipCount:tipCount,
-      specials:specials,xp:xp,totalEarned:totalEarned,
+      specials:specials,xp:xp,totalEarned:totalEarned,missedCount:missedCount,
       streak:streak,lastDate:lastDate,reviews:reviews,cafeRating:cafeRating,
       owned:Array.from(owned),cm:Array.from(completedMissions)
     }));
@@ -927,7 +927,7 @@ function loadSt(){
     if(d&&d.nick){
       prof={nick:d.nick,ava:d.ava};
       money=d.money||0;brews=d.brews||0;dones=d.dones||0;tipCount=d.tipCount||0;
-      specials=d.specials||0;xp=d.xp||0;totalEarned=d.totalEarned||0;
+      specials=d.specials||0;xp=d.xp||0;totalEarned=d.totalEarned||0;missedCount=d.missedCount||0;
       streak=d.streak||0;lastDate=d.lastDate||"";
       reviews=d.reviews||[];cafeRating=+Math.min(5,(1+(Math.max(1,(d.xp===undefined?1:LVS.filter(function(l){return (d.xp||0)>=l.xp;}).length||1))-1)*4/49)).toFixed(1);
       owned=new Set(d.owned||BI.map(function(i){return i.id;}));
@@ -1037,7 +1037,7 @@ function finishOB(){
   var n=document.getElementById("ob-nick").value.trim();
   if(!n){toast("Введи нікнейм!");return;}
   prof={nick:n,ava:"☕"};
-  money=0;brews=0;dones=0;tipCount=0;specials=0;xp=0;totalEarned=0;
+  money=0;brews=0;dones=0;tipCount=0;specials=0;xp=0;totalEarned=0;missedCount=0;
   streak=1;lastDate=new Date().toDateString();reviews=[];cafeRating=0;combo=0;
   owned=new Set(BI.map(function(i){return i.id;}));
   completedMissions=new Set();
@@ -1058,17 +1058,7 @@ function startGame(){
   for(var i=0;i<getLvl().max;i++){var o=mkOrd();queue.push(o);hist.push(Object.assign({},o));}
   startTimers();
   if(qInt)clearInterval(qInt);
-  qInt=setInterval(function(){
-    var lv=getLvl(),rb=getRevBonus();
-    var effMax=Math.max(lv.max,Math.round(lv.max*rb.clientMult));
-    var active=queue.filter(function(o){return o.status!=="done"&&o.status!=="missed";}).length;
-    if(active<effMax){
-      var no=mkOrd();queue.push(no);hist.push(Object.assign({},no));startTimers();
-      if(document.getElementById("s-queue").classList.contains("on"))renderQueue();
-      if(curTab==="orders")renderTab("orders");
-      if(no.isSp)notif("⭐ Особливе замовлення!");else if(no.isU)notif("🔥 Термінове!");
-    }
-  },15000);
+  qInt=setInterval(function(){fillQueue();},8000);
   scheduleRush();scheduleEvent();
   showScr("s-main");setTab("home");
 }
@@ -1359,7 +1349,7 @@ function renderMissions(){
 // ─── ORDERS ───
 function renderOrders(){
   var active=hist.filter(function(o){return o.status==="waiting"||o.status==="brewing";});
-  var missed=hist.filter(function(o){return o.status==="missed";}).length;
+  var missed=missedCount;
   var h='<div class="pt">Замовлення 📋</div><div class="ps">Активна черга та загальна статистика</div>'
         +'<div class="orders-layout"><div class="order-col"><div class="sec-t">⏳ Активні</div>';
   if(!active.length){
@@ -1603,10 +1593,26 @@ function renderProfReviews(){
 }
 function editNick(){
   var n=prompt("Новий нікнейм:",prof?prof.nick:"");
-  if(n&&n.trim()){prof.nick=n.trim();saveSt();renderTab("profile");toast("✅ Нікнейм змінено!");}
+  if(n&&n.trim()){var oldNick=prof.nick;prof.nick=n.trim();try{var lb=JSON.parse(localStorage.getItem("dc3_lb")||"[]");var i=lb.findIndex(function(x){return x.nick===oldNick;});if(i>=0)lb[i].nick=prof.nick;localStorage.setItem("dc3_lb",JSON.stringify(lb));}catch(e){}saveSt();renderTab("profile");toast("✅ Нікнейм змінено!");}
 }
 
 // ═══ TIMERS ═══
+function fillQueue(){
+  var lv=getLvl(),rb=getRevBonus();
+  var cap=Math.min(6,Math.max(lv.max,Math.round(lv.max*rb.clientMult)));
+  var active=queue.filter(function(o){return o.status!=="done"&&o.status!=="missed";}).length;
+  var need=cap-active;
+  for(var i=0;i<need;i++){
+    (function(delay){
+      setTimeout(function(){
+        var no=mkOrd();queue.push(no);hist.push(Object.assign({},no));startTimers();
+        if(document.getElementById("s-queue").classList.contains("on"))renderQueue();
+        if(curTab==="orders")renderTab("orders");
+        if(no.isSp)notif("⭐ Особливе замовлення!");else if(no.isU)notif("🔥 Термінове!");
+      },delay);
+    })(i*3000);
+  }
+}
 function startTimers(){
   queue.forEach(function(o){
     if(timers[o.id]||o.status==="done"||o.status==="missed")return;
@@ -1638,11 +1644,12 @@ function startTimers(){
         if(curOrd&&curOrd.id===o.id){
           queue[idx].timedOut=true;
         } else {
-          queue[idx].status="missed";
+          queue[idx].status="missed";missedCount++;saveSt();
           var hh=hist.find(function(x){return x.id===o.id;});if(hh)hh.status="missed";
           queue=queue.filter(function(x){return x.id!==o.id;});
           renderQueue();if(curTab==="orders")renderTab("orders");
-          toast("😞 "+o.cl.a+" "+nm+(isFem?" пішла!":" пішов!"));
+          toast("😥 "+o.cl.a+" "+nm+(isFem?" пішла!":" пішов!"));
+          setTimeout(fillQueue,4000);
         }
       }
     },1000);
@@ -1865,7 +1872,7 @@ function serve(){
 }
 function closeResult(){
   closeOv("res-ov");
-  var o=mkOrd();queue.push(o);hist.push(Object.assign({},o));startTimers();
+  setTimeout(fillQueue,2000);
   setTab("orders");
 }
 
